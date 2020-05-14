@@ -1,12 +1,25 @@
+import 'assets/scss/custom.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+
+import Index from 'views/Index';
+import About from 'views/About';
+import Projects from 'views/Projects/Projects';
+import Work from 'views/Work/Work';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Route path="/work" render={(props) => <Work {...props} />} />
+        <Route path="/projects" render={(props) => <Projects {...props} />} />
+        <Route path="/about" render={(props) => <About {...props} />} />
+        <Route path="/" render={(props) => <Index {...props} />} />
+        <Redirect to="/" />
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
