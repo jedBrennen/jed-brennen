@@ -7,13 +7,15 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Index from 'views/Index';
 import About from 'views/About';
 import Projects from 'views/Projects/Projects';
-import Work from 'views/Work/Work';
+import AppNavbar from 'components/AppNavbar';
+import Companies from 'views/Work/Companies';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
+      <AppNavbar />
       <Switch>
-        <Route path="/work" render={(props) => <Work {...props} />} />
+        <Route path="/companies" render={(props) => <Companies {...props} />} />
         <Route path="/projects" render={(props) => <Projects {...props} />} />
         <Route path="/about" render={(props) => <About {...props} />} />
         <Route path="/" render={(props) => <Index {...props} />} />

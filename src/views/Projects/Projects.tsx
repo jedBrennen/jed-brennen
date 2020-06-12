@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter, RouteComponentProps } from 'react-router';
-
-import WorkList from './ProjectsList';
-import Intersxion from './Intersxion';
+import ProjectList from './ProjectList';
 
 class Projects extends Component<RouteComponentProps> {
   render() {
@@ -10,11 +8,14 @@ class Projects extends Component<RouteComponentProps> {
 
     return (
       <Switch>
-        <Route
+        {/* <Route
           path={`${match.path}/intersxion`}
           render={(props) => <Intersxion {...props} />}
+        /> */}
+        <Route
+          path={match.path}
+          render={(props) => <ProjectList {...props} />}
         />
-        <Route path={match.path} render={(props) => <WorkList {...props} />} />
       </Switch>
     );
   }

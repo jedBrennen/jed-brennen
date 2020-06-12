@@ -22,8 +22,8 @@ export default class AppNavbar extends Component {
               </LinkContainer>
             </Nav.Item>
             <Nav.Item>
-              <LinkContainer to="/work">
-                <Nav.Link>Work</Nav.Link>
+              <LinkContainer to="/Companies">
+                <Nav.Link>Companies</Nav.Link>
               </LinkContainer>
             </Nav.Item>
           </Nav>
