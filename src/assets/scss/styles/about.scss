@@ -1,0 +1,16 @@
+$nav-height: 71px;
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &:first-of-type {
+    height: calc(100vh - #{$nav-height});
+  }
+
+  &-center {
+    margin-bottom: $nav-height;
+  }
+}

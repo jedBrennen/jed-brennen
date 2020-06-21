@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Project } from 'models/project.model';
-import ProjectsService from 'services/project.service';
-import { List } from 'components/List/List';
+import { Container } from 'react-bootstrap';
+
+import FirebaseService, { FirebaseContext } from 'services/firebase.service';
+import ProjectService from 'services/project.service';
+import Project from 'models/project.model';
+import List from 'components/List/List';
 import ListItem from 'components/List/ListItem';
-import ProjectModal from './ProjectModal';
 
 interface ProjectListState {
   isLoading: boolean;
   projects: Project[];
-  isModalOpen: boolean;
-  modalProject?: Project;
 }
 
 export default class ProjectList extends Component<
   RouteComponentProps,
   ProjectListState
 > {
-  private projectService: ProjectsService;
+  static contextType = FirebaseContext;
+  public context!: React.ContextType<typeof FirebaseContext>;
+  private projectService: ProjectService;
 
-  constructor(props: RouteComponentProps) {
+  constructor(props: RouteComponentProps, context: FirebaseService) {
     super(props);
 
-    this.projectService = new ProjectsService();
+    this.projectService = new ProjectService(context);
     this.state = {
       isLoading: false,
       projects: [],
-      isModalOpen: false,
     };
   }
 
@@ -36,24 +37,20 @@ export default class ProjectList extends Component<
 
   render() {
     return (
-      <>
-        <List title="Projects" isLoading={this.state.isLoading}>
+      <Container>
+        <h1 className="mb-3">Projects</h1>
+        <List<Project> isLoading={this.state.isLoading}>
           {this.state.projects.map((project) => (
             <ListItem
               key={project.id}
               title={project.title}
               subtitle={project.technology.join(', ')}
               body={project.shortDescription}
-              onOpen={() => this.setState({ isModalOpen: true })}
+              onOpen={() => this.navigateToProject(project.id)}
             />
           ))}
         </List>
-        <ProjectModal
-          project={this.state.modalProject}
-          isOpen={this.state.isModalOpen}
-          handleClose={() => this.setState({ isModalOpen: false })}
-        />
-      </>
+      </Container>
     );
   }
 
@@ -61,8 +58,11 @@ export default class ProjectList extends Component<
     this.setState({ isLoading: true });
     this.projectService
       .getProjects()
-      .then((projects) =>
-        this.setState({ projects: projects, isLoading: false })
-      );
+      .then((projects) => this.setState({ projects, isLoading: false }));
+  }
+
+  private navigateToProject(projectId: string): void {
+    const { match, history } = this.props;
+    history.push(`${match.path}/${projectId}`);
   }
 }

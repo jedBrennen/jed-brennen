@@ -5,6 +5,10 @@ $line-height-lg: 3.375 !default;
 @import '~bootstrap/scss/bootstrap.scss';
 @import './paper-kit/paper-kit.scss';
 
+html {
+  padding: env(safe-area-inset);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

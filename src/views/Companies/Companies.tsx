@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter, RouteComponentProps } from 'react-router';
-import CompanyList from './CompanyList';
+
+import CompanyList from 'views/Companies/CompanyList';
 
 class Companies extends Component<RouteComponentProps> {
   render() {
@@ -8,14 +9,6 @@ class Companies extends Component<RouteComponentProps> {
 
     return (
       <Switch>
-        {/* <Route
-          path={`${match.path}/sagepeople`}
-          render={(props) => <SagePeople {...props} />}
-        />
-        <Route
-          path={`${match.path}/urbanscience`}
-          render={(props) => <UrbanScience {...props} />}
-        /> */}
         <Route
           path={match.path}
           render={(props) => <CompanyList {...props} />}

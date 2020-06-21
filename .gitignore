@@ -11,8 +11,16 @@
 # production
 /build
 
+# TinyMCE styles
+public/assets
+
 # firebase
-.firebase
+.firebase/**/*
+.firebaserc
+firebase.*
+firestore.*
+storage.rules
+!*/**/firebase.*
 
 # misc
 .vscode

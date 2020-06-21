@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { Project } from 'models/project.model';
+import Project from 'models/project.model';
 
 interface ProjectModalProps {
   project?: Project;

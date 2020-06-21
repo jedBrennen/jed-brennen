@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
+
 import 'assets/scss/styles/list/list-item-skeleton.scss';
 
 export default class ListItemSkeleton extends Component {

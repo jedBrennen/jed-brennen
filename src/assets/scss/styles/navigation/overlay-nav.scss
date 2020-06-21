@@ -1,0 +1,40 @@
+.overlay-nav {
+  max-width: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-x: hidden;
+  transition: height 0.5s;
+
+  &--closed {
+    height: 0;
+  }
+
+  &--open {
+    height: 100%;
+  }
+
+  & .btn-link {
+    color: white;
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem 2rem;
+  }
+
+  &__items {
+    margin-top: 25%;
+
+    & .btn-link {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+}

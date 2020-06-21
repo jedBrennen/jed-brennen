@@ -1,11 +1,20 @@
-import { db } from 'services/firebase.service';
-import { Project } from 'models/project.model';
+import FirebaseService from 'services/firebase.service';
+import About from 'models/about.model';
 
-const collectionName = 'about';
+const aboutCollection = 'about';
 
 export default class AboutService {
+  constructor(private firebase: FirebaseService) {}
+
   public async getAbout() {
-    let projects = await db.collection(collectionName).get();
-    return projects.docs.map((doc) => doc.data() as Project);
+    const about = await this.firebase.db
+      .collection(aboutCollection)
+      .withConverter<About>(About.converter)
+      .get();
+    if (about.docs.length) {
+      return about.docs[0].data();
+    }
+
+    return undefined;
   }
 }

@@ -1,0 +1,54 @@
+@import 'assets/scss/styles/helpers/screen-helpers';
+
+body {
+  padding-top: 71px;
+
+  @include xs {
+    padding-top: 41px;
+  }
+}
+
+.navbar {
+  & .navbar-brand {
+    @include xs {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+
+  & .nav-item {
+    @include xs {
+      display: none;
+    }
+    &.navbar-burger {
+      display: none;
+
+      @include xs {
+        display: initial;
+      }
+
+      & .nav-link {
+        margin: 0 15px;
+        padding: 10px 15px;
+      }
+    }
+  }
+}
+
+.headroom {
+  @include sm {
+    will-change: transform;
+    transition: transform 0.5s ease-in-out;
+
+    &--pinned {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      transform: translateY(0%);
+    }
+
+    &--unpinned {
+      transform: translateY(-100%);
+    }
+  }
+}

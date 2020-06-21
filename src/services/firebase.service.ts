@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
-import { FirebaseModel } from 'models/firebase.model';
+import 'firebase/firestore';
+import React from 'react';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -11,12 +12,29 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
-firebase.initializeApp(firebaseConfig);
 
-export const db = firebase.firestore();
+export default class FirebaseService {
+  public db: firebase.firestore.Firestore;
+  public auth: firebase.auth.Auth;
+  public storage: firebase.storage.Storage;
+  private static instance: FirebaseService;
 
-export const mapFirebaseData = <T extends FirebaseModel>(
-  doc: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>
-): T => ({ id: doc.id, ...doc.data() } as T);
+  private constructor() {
+    firebase.initializeApp(firebaseConfig);
+    this.db = firebase.firestore();
+    this.auth = firebase.auth();
+    this.storage = firebase.storage();
+  }
 
-export default firebase;
+  public static getInstance(): FirebaseService {
+    if (!FirebaseService.instance) {
+      FirebaseService.instance = new FirebaseService();
+    }
+
+    return FirebaseService.instance;
+  }
+}
+
+export const FirebaseContext = React.createContext<FirebaseService>(
+  FirebaseService.getInstance()
+);
