@@ -18,41 +18,45 @@ export default class OverlayNav extends Component<OverlayNavProps> {
 
   render() {
     return (
-      <Container
+      <div
         className={`overlay-nav overlay-nav${
           this.props.show ? '--open' : '--closed'
         }`}
       >
-        <Button
-          className="btn-link overlay-nav__close"
-          onClick={this.props.onClose}
-        >
-          <FontAwesomeIcon icon="times" size="3x" />
-        </Button>
-        <Row xs={1} className="overlay-nav__items">
-          <div className="text-center">
-            <LinkContainer to={ABOUT}>
-              <Button className="btn-link" onClick={this.props.onClose}>
-                About
-              </Button>
-            </LinkContainer>
-          </div>
-          <div className="text-center">
-            <LinkContainer to={PROJECTS}>
-              <Button className="btn-link" onClick={this.props.onClose}>
-                Projects
-              </Button>
-            </LinkContainer>
-          </div>
-          <div className="text-center">
-            <LinkContainer to={COMPANIES}>
-              <Button className="btn-link" onClick={this.props.onClose}>
-                Companies
-              </Button>
-            </LinkContainer>
-          </div>
-        </Row>
-      </Container>
+        <Container>
+          <Row className="align-items-end">
+            <Button
+              className="btn-link overlay-nav__close"
+              onClick={this.props.onClose}
+            >
+              <FontAwesomeIcon icon="times" size="3x" />
+            </Button>
+          </Row>
+          <Row xs={1} className="overlay-nav__items">
+            <div className="text-center">
+              <LinkContainer to={ABOUT}>
+                <Button className="btn-link" onClick={this.props.onClose}>
+                  About
+                </Button>
+              </LinkContainer>
+            </div>
+            <div className="text-center">
+              <LinkContainer to={PROJECTS}>
+                <Button className="btn-link" onClick={this.props.onClose}>
+                  Projects
+                </Button>
+              </LinkContainer>
+            </div>
+            <div className="text-center">
+              <LinkContainer to={COMPANIES}>
+                <Button className="btn-link" onClick={this.props.onClose}>
+                  Companies
+                </Button>
+              </LinkContainer>
+            </div>
+          </Row>
+        </Container>
+      </div>
     );
   }
 }

@@ -1,29 +1,29 @@
 @import 'assets/scss/styles/helpers/screen-helpers';
 
 body {
-  padding-top: 71px;
+  padding-top: 41px;
 
-  @include xs {
-    padding-top: 41px;
+  @include md {
+    padding-top: 71px;
   }
 }
 
 .navbar {
   & .navbar-brand {
-    @include xs {
+    @include max-xs {
       padding-top: 10px;
       padding-bottom: 10px;
     }
   }
 
   & .nav-item {
-    @include xs {
+    @include max-sm {
       display: none;
     }
     &.navbar-burger {
       display: none;
 
-      @include xs {
+      @include max-sm {
         display: initial;
       }
 
@@ -36,9 +36,9 @@ body {
 }
 
 .headroom {
-  @include sm {
-    will-change: transform;
-    transition: transform 0.5s ease-in-out;
+  @include md {
+    will-change: transform, background-color;
+    transition: transform 0.5s ease-in-out, background-color 0.4s ease-in-out;
 
     &--pinned {
       position: fixed;

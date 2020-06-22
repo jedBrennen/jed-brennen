@@ -1,3 +1,5 @@
+@import 'assets/scss/styles/helpers/screen-helpers';
+
 .overlay-nav {
   max-width: 100%;
   width: 100%;
@@ -18,15 +20,27 @@
     height: 100%;
   }
 
+  & .container {
+    padding-right: 0;
+    padding-left: 0;
+    width: 100%;
+    align-items: end;
+  }
+
   & .btn-link {
     color: white;
   }
 
   &__close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 1rem 2rem;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+
+    @include max-xs {
+      margin-top: 0px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
   }
 
   &__items {
