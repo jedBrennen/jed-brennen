@@ -37,7 +37,6 @@ export default class Education extends FirebaseModel {
           snapshot,
           options
         );
-        education.projects = [];
         education.courses = [];
         return education;
       },
