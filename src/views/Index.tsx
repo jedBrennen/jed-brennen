@@ -1,38 +1,49 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import Showcase from 'components/Showcase';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Container, Row } from 'react-bootstrap';
+
+import { ABOUT, PROJECTS, COMPANIES } from 'constants/routes';
+import AboutView from 'views/About/AboutView';
+import Projects from 'views/Projects/Projects';
+import Companies from 'views/Companies/Companies';
+import AppNavbar from 'components/Navigation/AppNavbar';
+
+import 'assets/scss/styles/index.scss';
 
 export default class Index extends Component {
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col className="text-center p-0 mb-3">
-            <Showcase
-              header="Intersxion"
-              subheader="An app for finding a home for professionals"
-              major={true}
-            />
-          </Col>
-        </Row>
-        <Row xs={1} sm={1} md={2} className="d-flex">
-          <Col className="text-center px-sm-0 px-md-2 pl-md-3 mb-3">
-            <Showcase
-              header="Graduate Software Developer"
-              subheader="Sage People"
-            />
-          </Col>
-          <Col className="text-center px-sm-0 px-md-2 pr-md-3 mb-3">
-            <Showcase header="Intern/Analyst" subheader="Urban Science" />
-          </Col>
-          <Col className="text-center px-sm-0 px-md-2 pl-md-3 mb-3">
-            <Showcase header="About Me" subheader="Learn more about who I am" />
-          </Col>
-          <Col className="text-center px-sm-0 px-md-2 pr-md-3 mb-3">
-            <Showcase header="Skills" subheader="My skillset" />
-          </Col>
-        </Row>
-      </Container>
+      <BrowserRouter>
+        <div className="page-wrapper">
+          <AppNavbar />
+          <div className="page-content">
+            <Switch>
+              <Route
+                exact
+                path={ABOUT}
+                render={(props) => <AboutView {...props} />}
+              />
+              <Route
+                path={PROJECTS}
+                render={(props) => <Projects {...props} />}
+              />
+              <Route
+                path={COMPANIES}
+                render={(props) => <Companies {...props} />}
+              />
+              <Redirect to={ABOUT} />
+            </Switch>
+          </div>
+          <footer className="page-footer">
+            <Container className="h-100">
+              <Row className="h-100 justify-content-center align-items-center">
+                <span className="text-primary mr-2">Jed Brennen</span>
+                <span className="text-success">© 2020</span>
+              </Row>
+            </Container>
+          </footer>
+        </div>
+      </BrowserRouter>
     );
   }
 }

@@ -1,8 +1,70 @@
+@import 'assets/scss/styles/helpers/screen-helpers';
+
 .showcase {
-  &-container {
-    position: relative;
-    overflow: hidden;
+  display: inline-block;
+  position: relative;
+  justify-content: space-evenly;
+
+  @include sm {
+    padding: 0.5rem;
+  }
+
+  &:hover &__image {
+    opacity: 0;
+  }
+
+  &:hover &__text,
+  &:hover &__button {
+    opacity: 1;
+  }
+
+  &:hover &__text {
+    top: 25%;
+  }
+
+  &:hover &__button {
+    bottom: 25%;
+  }
+
+  &,
+  &__image {
+    object-fit: cover;
+    max-width: 100%;
+
+    @include sm {
+      height: 16rem;
+      border-radius: 0.5rem;
+    }
+
+    @include md {
+      height: 18rem;
+    }
+  }
+
+  &__image,
+  &__text,
+  &__button {
+    will-change: opacity, top, bottom;
+    transition: all 0.2s ease-in;
+  }
+
+  &__text,
+  &__button {
+    left: 0;
+    opacity: 0;
+    position: absolute;
     text-align: center;
-    height: 100%;
+    width: 100%;
+    z-index: 2;
+  }
+
+  &__text {
+    top: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  &__button {
+    bottom: 0;
   }
 }

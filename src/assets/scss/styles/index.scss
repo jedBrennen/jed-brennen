@@ -1,0 +1,27 @@
+@import 'assets/scss/styles/helpers/screen-helpers';
+
+$nav-height: 101px;
+$nav-height-sm: 71px;
+
+.page {
+  &-wrapper {
+    position: relative;
+    min-height: calc(100vh - #{$nav-height-sm});
+
+    @include md {
+      min-height: calc(100vh - #{$nav-height});
+    }
+  }
+
+  &-content {
+    padding-bottom: 4.5rem;
+  }
+
+  &-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 3.5rem;
+    background: var(--secondary);
+  }
+}

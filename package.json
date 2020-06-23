@@ -36,7 +36,8 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/smoothscroll-polyfill": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "tslint": "^6.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

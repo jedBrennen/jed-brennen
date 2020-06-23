@@ -41,7 +41,13 @@ export default class AppNavbar extends Component<{}, AppNavbarState> {
   render() {
     return (
       <>
-        <Navbar ref={this.navbarRef} bg="primary" expand="lg" fixed="top">
+        <Navbar
+          className="app-navbar"
+          ref={this.navbarRef}
+          bg="primary"
+          expand="lg"
+          fixed="top"
+        >
           <Container>
             <LinkContainer to="/">
               <Navbar.Brand>Jed Brennen</Navbar.Brand>

@@ -10,14 +10,17 @@
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.9);
   overflow-x: hidden;
-  transition: height 0.5s;
 
   &--closed {
     height: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, height 0s linear 0.3s;
   }
 
   &--open {
     height: 100%;
+    opacity: 1;
+    transition: height 0.5s;
   }
 
   & .container {

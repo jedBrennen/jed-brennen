@@ -25,14 +25,40 @@ export default class ProjectService {
         .get()
     ).docs;
     if (project) {
-      project.images = imageDocs.map((imageDoc) => imageDoc.data());
+      project.images = await this.getImages(project.id);
       return project;
     }
+  }
 
-    return undefined;
+  public async getCompleteProjects() {
+    const projectsSnapshot = await this.collection
+      .withConverter<Project>(Project.converter)
+      .get();
+
+    const projects = await Promise.all(
+      projectsSnapshot.docs.map(async (doc) => {
+        const project = doc.data();
+        project.images = await this.getImages(doc.id);
+        return project;
+      })
+    );
+
+    return projects;
   }
 
   private get collection() {
     return this.firebase.db.collection(ProjectService.collectionName);
+  }
+
+  private async getImages(projectId: string) {
+    const projectDoc = this.collection.doc(projectId);
+    const imageDocs = (
+      await projectDoc
+        .collection('images')
+        .withConverter<Image>(Image.converter)
+        .get()
+    ).docs;
+
+    return imageDocs.map((doc) => doc.data());
   }
 }

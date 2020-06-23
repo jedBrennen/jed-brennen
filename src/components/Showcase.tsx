@@ -1,31 +1,35 @@
-import 'assets/scss/styles/showcase/showcase.scss';
 import React, { Component } from 'react';
+
+import Image from 'models/image.model';
 import { Button } from 'react-bootstrap';
 
-type ShowcaseProps = {
-  header: string;
-  subheader: string;
-  major?: boolean;
-};
+import 'assets/scss/styles/showcase/showcase.scss';
+
+interface ShowcaseProps {
+  title: string;
+  subtitle: string;
+  image: Image;
+}
 
 export default class Showcase extends Component<ShowcaseProps> {
   render() {
     return (
-      <>
-        <div className="showcase-container p-3 p-md-5 bg-light">
-          <div
-            className={`${
-              this.props.major ?? false ? 'h2' : 'h3'
-            } font-weight-bold`}
-          >
-            {this.props.header}
+      <div className="showcase">
+        <div>
+          <img
+            className="showcase__image"
+            src={this.props.image.src}
+            alt={this.props.image.alt}
+          />
+          <div className="showcase__text">
+            <h5>{this.props.title}</h5>
+            <h6>{this.props.subtitle}</h6>
           </div>
-          <h5>{this.props.subheader}</h5>
-          <Button variant="outline-primary" className="mt-3">
-            Learn More
-          </Button>
+          <div className="showcase__button">
+            <Button variant="outline-info">Learn More</Button>
+          </div>
         </div>
-      </>
+      </div>
     );
   }
 }

@@ -8,28 +8,36 @@ body {
   }
 }
 
-.navbar {
-  & .navbar-brand {
-    @include max-xs {
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-  }
-
-  & .nav-item {
-    @include max-sm {
-      display: none;
-    }
-    &.navbar-burger {
-      display: none;
-
-      @include max-sm {
-        display: initial;
+.app-navbar {
+  &.navbar {
+    & .navbar-brand {
+      @include max-xs {
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
+    }
 
-      & .nav-link {
-        margin: 0 15px;
-        padding: 10px 15px;
+    &-nav {
+      @include max-sm {
+        margin: 0;
+      }
+    }
+
+    & .nav-item {
+      @include max-sm {
+        display: none;
+      }
+      &.navbar-burger {
+        display: none;
+
+        @include max-sm {
+          display: initial;
+        }
+
+        & .nav-link {
+          margin: 0 15px;
+          padding: 10px 15px;
+        }
       }
     }
   }
