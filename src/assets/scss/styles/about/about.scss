@@ -26,6 +26,10 @@ $nav-height-sm: 41px;
     }
   }
 
+  &:nth-of-type(odd):not(:first-of-type) {
+    background-color: lighten(grey, 40%);
+  }
+
   &-center {
     margin-bottom: $nav-height;
   }

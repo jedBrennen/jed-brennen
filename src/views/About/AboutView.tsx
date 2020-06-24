@@ -61,12 +61,15 @@ export default class AboutView extends Component<{}, AboutViewState> {
           onScroll={this.scrollToFirstSection}
           summary={this.state.about.summary || 'Loading...'}
         />
-        {/* <SkillsHeader /> */}
-        <EducationHeader
-          education={this.state.education}
-          projects={this.state.projects}
-        />
-        {/* <OtherHeader /> */}
+        {!this.state.isLoading && (
+          <>
+            <EducationHeader
+              education={this.state.education}
+              projects={this.state.projects}
+            />
+            <OtherHeader hobbies={this.state.hobbies} />
+          </>
+        )}
       </>
     );
   }
