@@ -3,6 +3,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 
 import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import AboutService from 'services/about.service';
+import ProjectService from 'services/project.service';
 import About from 'models/about.model';
 import Skill from 'models/skill.model';
 import Education from 'models/education.model';
@@ -15,7 +16,6 @@ import OtherHeader from 'views/About/OtherHeader';
 import { Alert } from 'react-bootstrap';
 
 import 'assets/scss/styles/about/about.scss';
-import ProjectService from 'services/project.service';
 
 interface AboutViewState {
   isLoading: boolean;
@@ -58,11 +58,13 @@ export default class AboutView extends Component<{}, AboutViewState> {
       <>
         {this.state.error && <Alert variant="danger">{this.state.error}</Alert>}
         <AboutHeader
+          isLoading={this.state.isLoading}
           onScroll={this.scrollToFirstSection}
           summary={this.state.about.summary || 'Loading...'}
         />
         {!this.state.isLoading && (
           <>
+            <SkillsHeader />
             <EducationHeader
               education={this.state.education}
               projects={this.state.projects}

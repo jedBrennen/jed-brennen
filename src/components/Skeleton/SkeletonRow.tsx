@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
-export class SkeletonRow extends Component {
+import 'assets/scss/styles/skeleton/skeleton-row.scss';
+
+interface SkeletonRowProps {
+  className?: string;
+}
+
+export class SkeletonRow extends Component<SkeletonRowProps> {
   render() {
-    return <div className="skeleton-row">tests</div>;
+    return <div className={`skeleton-row ${this.props.className || ''}`} />;
   }
 }

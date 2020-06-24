@@ -30,7 +30,7 @@
     align-items: end;
   }
 
-  & .btn-link {
+  & .btn-link.btn {
     color: white;
   }
 
@@ -38,6 +38,10 @@
     margin-left: auto;
     margin-top: 10px;
     margin-right: 10px;
+
+    & svg {
+      font-size: 2.5em;
+    }
 
     @include max-xs {
       margin-top: 0px;

@@ -16,6 +16,7 @@ $nav-height-sm: 41px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 2rem 0;
 
   &:first-of-type {
     height: 100vh;
@@ -30,7 +31,11 @@ $nav-height-sm: 41px;
     background-color: lighten(grey, 40%);
   }
 
+  & h1 {
+    margin-top: 0;
+  }
+
   &-center {
-    margin-bottom: $nav-height;
+    width: 100%;
   }
 }

@@ -4,14 +4,16 @@ import Particles, {
   InteractivityDetect,
   ParticlesProps,
 } from 'react-particles-js';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import Switch from 'react-bootstrap-switch';
 
 import * as utils from 'utils/Utils';
+import { SkeletonRow } from 'components/Skeleton/SkeletonRow';
 
 import 'assets/scss/styles/about/about-header.scss';
 
 interface AboutHeaderProps {
+  isLoading: boolean;
   summary: string;
   onScroll?: VoidFunction;
 }
@@ -24,6 +26,9 @@ export default class AboutHeader extends Component<
   AboutHeaderProps,
   AboutHeaderState
 > {
+  static defaultProps = {
+    isLoading: false,
+  };
   constructor(props: AboutHeaderProps) {
     super(props);
 
@@ -40,23 +45,9 @@ export default class AboutHeader extends Component<
           height="100vh"
           {...this.particleParams}
         />
-        <div className="header-center text-center about-header__text">
-          <h1
-            className="text-center mb-4"
-            dangerouslySetInnerHTML={{ __html: this.props.summary }}
-          ></h1>
-          <Button
-            variant="secondary"
-            className="about-header__scroll h6 btn-link"
-            onClick={this.props.onScroll}
-          >
-            Scroll down to learn more
-            <FontAwesomeIcon
-              icon="angle-double-down"
-              className="about-header__down ml-2"
-            />
-          </Button>
-        </div>
+        <Container className="header-center text-center about-header__text">
+          {this.props.isLoading ? this.loadingHeader : this.loadedHeader}
+        </Container>
         <span className="about-header__animation-switch h6">
           Animation:
           <Switch
@@ -68,6 +59,38 @@ export default class AboutHeader extends Component<
           ></Switch>
         </span>
       </section>
+    );
+  }
+
+  private get loadingHeader(): JSX.Element {
+    return (
+      <>
+        <SkeletonRow className="about-header__skeleton-title" />
+        <SkeletonRow className="about-header__skeleton-title mb-5" />
+        <SkeletonRow className="about-header__skeleton-scroll" />
+      </>
+    );
+  }
+
+  private get loadedHeader(): JSX.Element {
+    return (
+      <>
+        <h1
+          className="text-center mb-4"
+          dangerouslySetInnerHTML={{ __html: this.props.summary }}
+        ></h1>
+        <Button
+          variant="secondary"
+          className="about-header__scroll h6 btn-link"
+          onClick={this.props.onScroll}
+        >
+          Scroll down to learn more
+          <FontAwesomeIcon
+            icon="angle-double-down"
+            className="about-header__down ml-2"
+          />
+        </Button>
+      </>
     );
   }
 

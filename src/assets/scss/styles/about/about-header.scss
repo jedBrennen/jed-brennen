@@ -34,6 +34,39 @@
       padding: 1rem 2rem;
     }
   }
+
+  &__skeleton {
+    position: relative;
+
+    &-title {
+      width: 20rem;
+      height: 1.2rem;
+      margin: 0 auto;
+      margin-bottom: 0.5rem;
+
+      @include sm {
+        width: 30rem;
+        height: 2rem;
+      }
+
+      @include md {
+        height: 3rem;
+        width: 40rem;
+      }
+    }
+
+    &-scroll {
+      width: 12rem;
+      height: 0.8rem;
+      margin: 0 auto;
+      margin-bottom: calc(0.5rem + 9px);
+
+      @include md {
+        width: 15rem;
+        height: 1rem;
+      }
+    }
+  }
 }
 
 .particles {
