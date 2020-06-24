@@ -65,7 +65,7 @@ export default class AboutHeader extends Component<
   private get loadingHeader(): JSX.Element {
     return (
       <>
-        <SkeletonRow className="about-header__skeleton-title" />
+        <SkeletonRow className="about-header__skeleton-title" srAccessible />
         <SkeletonRow className="about-header__skeleton-title mb-5" />
         <SkeletonRow className="about-header__skeleton-scroll" />
       </>

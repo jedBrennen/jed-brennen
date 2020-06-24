@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
 
 import 'assets/scss/styles/list/list-item-skeleton.scss';
+import { SkeletonRow } from 'components/Skeleton/SkeletonRow';
 
 export default class ListItemSkeleton extends Component {
   render() {
     return (
       <Card>
         <Card.Body>
-          <span className="sr-only">Loading</span>
-          <div className="skeleton-title mb-2" role="status"></div>
-          <div className="skeleton-subtitle mb-4" role="status"></div>
-          <div className="skeleton-row--full" role="status"></div>
-          <div className="skeleton-row--full" role="status"></div>
-          <div className="skeleton-row--half" role="status"></div>
+          <SkeletonRow className="skeleton-title mb-2" srAccessible />
+          <SkeletonRow className="skeleton-subtitle mb-4" />
+          <SkeletonRow className="skeleton-row--full" />
+          <SkeletonRow className="skeleton-row--full" />
+          <SkeletonRow className="skeleton-row--half" />
         </Card.Body>
       </Card>
     );
