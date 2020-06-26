@@ -21,12 +21,17 @@ export default class AboutService {
     return about.docs[0].data();
   }
 
-  public async getSkills() {
+  public async getSkills(specificIds?: string) {
     const skills = await this.firebase.db
       .collection(skillsCollection)
       .withConverter<Skill>(Skill.converter)
       .get();
     if (skills.docs.length) {
+      if (specificIds) {
+        return skills.docs
+          .filter((doc) => specificIds.includes(doc.id))
+          .map((doc) => doc.data());
+      }
       return skills.docs.map((doc) => doc.data());
     }
 
@@ -62,7 +67,7 @@ export default class AboutService {
     return [];
   }
 
-  public async getCourses(educationId: string) {
+  private async getCourses(educationId: string) {
     const educationDoc = this.firebase.db
       .collection(educationCollection)
       .doc(educationId);

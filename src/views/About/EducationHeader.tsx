@@ -20,14 +20,14 @@ export default class EducationHeader extends Component<EducationHeaderProps> {
           <h1>Education</h1>
           {this.props.education.map((education) => {
             return (
-              <>
+              <div key={education.id}>
                 <div className="education__details">
                   <h3 className="education__institution">
                     {education.institution}
                   </h3>
                   {education.courses.map((course) => {
                     return (
-                      <div className="education__course">
+                      <div key={course.id} className="education__course">
                         <h4 className="mt-2">{course.name}</h4>
                         <h4 className="mt-2">{course.grade}</h4>
                       </div>
@@ -44,41 +44,15 @@ export default class EducationHeader extends Component<EducationHeaderProps> {
                   {this.getProjects(education.projects).map((project) => {
                     return (
                       <Showcase
+                        key={project.id}
                         title={project.title}
                         subtitle={project.shortDescription ?? ''}
                         image={project.images[0]}
-                      />
-                    );
-                  })}
-                  {this.getProjects(education.projects).map((project) => {
-                    return (
-                      <Showcase
-                        title={project.title}
-                        subtitle={project.shortDescription ?? ''}
-                        image={project.images[0]}
-                      />
-                    );
-                  })}
-                  {this.getProjects(education.projects).map((project) => {
-                    return (
-                      <Showcase
-                        title={project.title}
-                        subtitle={project.shortDescription ?? ''}
-                        image={project.images[1]}
-                      />
-                    );
-                  })}
-                  {this.getProjects(education.projects).map((project) => {
-                    return (
-                      <Showcase
-                        title={project.title}
-                        subtitle={project.shortDescription ?? ''}
-                        image={project.images[2]}
                       />
                     );
                   })}
                 </Row>
-              </>
+              </div>
             );
           })}
         </Container>

@@ -1,9 +1,10 @@
 import FirebaseModel from 'models/firebase.model';
 import Image from 'models/image.model';
+import Skill from 'models/skill.model';
 
 export default class Project extends FirebaseModel {
   public title: string;
-  public technology: string[];
+  public skills: Skill[];
   public images: Image[];
   public shortDescription?: string;
   public longDescription?: string;
@@ -13,7 +14,7 @@ export default class Project extends FirebaseModel {
     id: string,
     fromServer: boolean,
     title: string,
-    technology: string[],
+    skills: Skill[],
     images: Image[],
     shortDescription?: string,
     longDescription?: string,
@@ -21,7 +22,7 @@ export default class Project extends FirebaseModel {
   ) {
     super(id, fromServer);
     this.title = title;
-    this.technology = technology;
+    this.skills = skills;
     this.images = images;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
@@ -38,6 +39,7 @@ export default class Project extends FirebaseModel {
         options: firebase.firestore.SnapshotOptions
       ): Project => {
         const project = FirebaseModel.fromFirestore<Project>(snapshot, options);
+        project.skills = [];
         project.images = [];
         return project;
       },

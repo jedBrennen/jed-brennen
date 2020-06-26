@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-bootstrap';
 import smoothscroll from 'smoothscroll-polyfill';
 
 import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import AboutService from 'services/about.service';
 import ProjectService from 'services/project.service';
+import CompanyService from 'services/company.service';
+import Company from 'models/company.model';
 import About from 'models/about.model';
 import Skill from 'models/skill.model';
 import Education from 'models/education.model';
@@ -13,7 +16,6 @@ import AboutHeader from 'views/About/AboutHeader';
 import SkillsHeader from 'views/About/SkillsHeader';
 import EducationHeader from 'views/About/EducationHeader';
 import OtherHeader from 'views/About/OtherHeader';
-import { Alert } from 'react-bootstrap';
 
 import 'assets/scss/styles/about/about.scss';
 
@@ -24,6 +26,7 @@ interface AboutViewState {
   education: Education[];
   hobbies: Hobby[];
   projects: Project[];
+  companies: Company[];
   error?: string;
 }
 
@@ -32,12 +35,14 @@ export default class AboutView extends Component<{}, AboutViewState> {
   public context!: React.ContextType<typeof FirebaseContext>;
   private aboutService: AboutService;
   private projectService: ProjectService;
+  private companyService: CompanyService;
 
   constructor(props: any, context: FirebaseService) {
     super(props);
 
     this.aboutService = new AboutService(context);
     this.projectService = new ProjectService(context);
+    this.companyService = new CompanyService(context);
     this.state = {
       isLoading: false,
       about: new About(),
@@ -45,6 +50,7 @@ export default class AboutView extends Component<{}, AboutViewState> {
       education: [],
       hobbies: [],
       projects: [],
+      companies: [],
     };
   }
 
@@ -60,11 +66,15 @@ export default class AboutView extends Component<{}, AboutViewState> {
         <AboutHeader
           isLoading={this.state.isLoading}
           onScroll={this.scrollToFirstSection}
-          summary={this.state.about.summary || 'Loading...'}
+          summary={this.state.about.summary}
         />
         {!this.state.isLoading && (
           <>
-            <SkillsHeader />
+            <SkillsHeader
+              skills={this.state.skills}
+              projects={this.state.projects}
+              companies={this.state.companies}
+            />
             <EducationHeader
               education={this.state.education}
               projects={this.state.projects}
@@ -85,6 +95,7 @@ export default class AboutView extends Component<{}, AboutViewState> {
         this.aboutService.getEducation(),
         this.aboutService.getHobbies(),
         this.projectService.getCompleteProjects(),
+        this.companyService.getCompanies(),
       ]);
       this.setState({
         about: values[0],
@@ -92,6 +103,7 @@ export default class AboutView extends Component<{}, AboutViewState> {
         education: values[2],
         hobbies: values[3],
         projects: values[4],
+        companies: values[5],
         isLoading: false,
       });
     } catch {

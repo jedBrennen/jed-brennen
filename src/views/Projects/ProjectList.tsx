@@ -44,7 +44,6 @@ export default class ProjectList extends Component<
             <ListItem
               key={project.id}
               title={project.title}
-              subtitle={project.technology.join(', ')}
               body={project.shortDescription}
               onOpen={() => this.navigateToProject(project.id)}
             />

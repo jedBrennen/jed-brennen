@@ -1,8 +1,10 @@
 import FirebaseModel from 'models/firebase.model';
+import Skill from 'models/skill.model';
 
 export default class Company extends FirebaseModel {
   public name: string;
   public roles: Role[];
+  public skills: Skill[];
   public shortDescription?: string;
   public longDescription?: string;
 
@@ -11,12 +13,14 @@ export default class Company extends FirebaseModel {
     fromServer: boolean,
     name: string,
     roles: Role[],
+    skills: Skill[],
     shortDescription?: string,
     longDescription?: string
   ) {
     super(id, fromServer);
     this.name = name;
     this.roles = roles;
+    this.skills = skills;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
   }
@@ -32,6 +36,7 @@ export default class Company extends FirebaseModel {
       ): Company {
         const company = FirebaseModel.fromFirestore<Company>(snapshot, options);
         company.roles = [];
+        company.skills = [];
         return company;
       },
     };
