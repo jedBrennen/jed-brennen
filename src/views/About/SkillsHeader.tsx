@@ -33,13 +33,19 @@ const getOrderedSkills = (
     skills.map((skill) => {
       const projs = getProjects(skill.id, projects);
       const comps = getCompanies(skill.id, companies);
-      return [skill.id, projs.length + comps.length];
+      return [skill.id, [projs.length, comps.length]];
     })
   );
 
   return skills.sort((a, b) => {
-    if (skillMap.get(a.id)! > skillMap.get(b.id)!) return -1;
-    if (skillMap.get(a.id)! < skillMap.get(b.id)!) return 1;
+    const [aProj, aComp] = skillMap.get(a.id)!;
+    const [bProj, bComp] = skillMap.get(b.id)!;
+    if (aProj + aComp > bProj + bComp) return -1;
+    if (aProj + aComp < bProj + bComp) return 1;
+    if (aProj > bProj) return -1;
+    if (aProj < bProj) return 1;
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
     return 0;
   });
 };

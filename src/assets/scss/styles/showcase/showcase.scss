@@ -1,15 +1,21 @@
 @import 'assets/scss/styles/helpers/screen-helpers';
 
 .showcase {
-  display: inline-block;
-  position: relative;
-  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: 5px solid;
+  border-color: #ffffff00;
 
-  @include sm {
-    padding: 0.5rem;
+  &:hover {
+    border: 5px solid var(--info);
+    border-radius: 50%;
   }
 
   &:hover &__image {
+    border-radius: 50%;
     opacity: 0;
   }
 
@@ -28,40 +34,37 @@
 
   &,
   &__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    max-width: 100%;
-
-    @include sm {
-      height: 16rem;
-      border-radius: 0.5rem;
-    }
-
-    @include md {
-      height: 18rem;
-    }
+    border-radius: 0.5rem;
   }
 
+  &,
   &__image,
   &__text,
   &__button {
-    will-change: opacity, top, bottom;
+    will-change: opacity, top, bottom, border-radius, border;
     transition: all 0.2s ease-in;
   }
 
   &__text,
   &__button {
-    left: 0;
     opacity: 0;
-    position: absolute;
     text-align: center;
-    width: 100%;
-    z-index: 2;
   }
 
   &__text {
-    top: 0;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding: 0.5rem;
+    padding-top: 0;
+
+    @include sm {
+      padding: 0.5rem 1rem;
+      padding-top: 0;
+    }
   }
 
   &__button {

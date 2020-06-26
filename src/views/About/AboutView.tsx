@@ -95,7 +95,7 @@ export default class AboutView extends Component<{}, AboutViewState> {
         this.aboutService.getEducation(),
         this.aboutService.getHobbies(),
         this.projectService.getCompleteProjects(),
-        this.companyService.getCompanies(),
+        this.companyService.getCompleteCompanies(),
       ]);
       this.setState({
         about: values[0],

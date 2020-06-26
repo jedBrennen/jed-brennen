@@ -1,9 +1,14 @@
-import Company, { Role } from 'models/company.model';
 import FirebaseService from 'services/firebase.service';
+import AboutService from 'services/about.service';
+import Company, { Role } from 'models/company.model';
 
 export default class CompanyService {
   static readonly collectionName = 'companies';
-  constructor(private firebase: FirebaseService) {}
+  private aboutService: AboutService;
+
+  constructor(private firebase: FirebaseService) {
+    this.aboutService = new AboutService(firebase);
+  }
 
   public async getCompanies() {
     const companyCollection = await this.collection
@@ -17,18 +22,37 @@ export default class CompanyService {
     const company = (
       await companyDoc.withConverter<Company>(Company.converter).get()
     ).data();
+    if (company) {
+      company.roles = await this.getRoles(company.id);
+      return company;
+    }
+  }
+
+  public async getCompleteCompanies() {
+    const companiesSnapshot = await this.collection.get();
+
+    const companies = await Promise.all(
+      companiesSnapshot.docs.map(async (doc) => {
+        const skillIds = doc.data().skills;
+        const company = Company.converter.fromFirestore(doc, {});
+        company.skills = await this.aboutService.getSkills(skillIds);
+        return company;
+      })
+    );
+
+    return companies;
+  }
+
+  private async getRoles(companyId: string) {
+    const projectDoc = this.collection.doc(companyId);
     const roleDocs = (
-      await companyDoc
+      await projectDoc
         .collection('roles')
         .withConverter<Role>(Role.converter)
         .get()
     ).docs;
-    if (company) {
-      company.roles = roleDocs.map((roleDoc) => roleDoc.data());
-      return company;
-    }
 
-    return undefined;
+    return roleDocs.map((doc) => doc.data());
   }
 
   private get collection() {
