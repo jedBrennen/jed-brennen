@@ -4,7 +4,7 @@ import Particles, {
   InteractivityDetect,
   ParticlesProps,
 } from 'react-particles-js';
-import { Button, Container } from 'react-bootstrap';
+import { Button, Container, Alert } from 'react-bootstrap';
 import Switch from 'react-bootstrap-switch';
 
 import * as utils from 'utils/Utils';
@@ -15,6 +15,7 @@ import 'assets/scss/styles/about/about-header.scss';
 interface AboutHeaderProps {
   isLoading: boolean;
   summary: string;
+  error?: string;
   onScroll?: VoidFunction;
 }
 
@@ -46,7 +47,13 @@ export default class AboutHeader extends Component<
           {...this.particleParams}
         />
         <Container className="header-center text-center about-header__text">
-          {this.props.isLoading ? this.loadingHeader : this.loadedHeader}
+          {this.props.error ? (
+            <Alert variant="danger">{this.props.error}</Alert>
+          ) : this.props.isLoading ? (
+            this.loadingHeader
+          ) : (
+            this.loadedHeader
+          )}
         </Container>
         <span className="about-header__animation-switch h6">
           Animation:

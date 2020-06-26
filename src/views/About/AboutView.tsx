@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-bootstrap';
 import smoothscroll from 'smoothscroll-polyfill';
 
 import FirebaseService, { FirebaseContext } from 'services/firebase.service';
@@ -62,13 +61,13 @@ export default class AboutView extends Component<{}, AboutViewState> {
   render() {
     return (
       <>
-        {this.state.error && <Alert variant="danger">{this.state.error}</Alert>}
         <AboutHeader
           isLoading={this.state.isLoading}
-          onScroll={this.scrollToFirstSection}
           summary={this.state.about.summary}
+          error={this.state.error}
+          onScroll={this.scrollToFirstSection}
         />
-        {!this.state.isLoading && (
+        {!this.state.isLoading && !this.state.error && (
           <>
             <SkillsHeader
               skills={this.state.skills}
