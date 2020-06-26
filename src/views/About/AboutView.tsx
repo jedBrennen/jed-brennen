@@ -15,7 +15,7 @@ import Project from 'models/project.model';
 import AboutHeader from 'views/About/AboutHeader';
 import SkillsHeader from 'views/About/SkillsHeader';
 import EducationHeader from 'views/About/EducationHeader';
-import OtherHeader from 'views/About/OtherHeader';
+import HobbyHeader from 'views/About/HobbyHeader';
 
 import 'assets/scss/styles/about/about.scss';
 
@@ -79,7 +79,7 @@ export default class AboutView extends Component<{}, AboutViewState> {
               education={this.state.education}
               projects={this.state.projects}
             />
-            <OtherHeader hobbies={this.state.hobbies} />
+            <HobbyHeader hobbies={this.state.hobbies} />
           </>
         )}
       </>

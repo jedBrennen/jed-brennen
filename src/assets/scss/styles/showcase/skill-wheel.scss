@@ -15,19 +15,26 @@
 
   &__logo {
     position: relative;
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     object-fit: contain;
-    margin-bottom: 1rem;
-
-    @include md {
-      width: 3rem;
-      height: 3rem;
-    }
+    margin-bottom: 0.5rem;
 
     @include xl {
       width: 4rem;
       height: 4rem;
     }
+  }
+
+  &__project-count {
+    margin-bottom: 0;
+
+    @include xl {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__company-count {
+    margin-bottom: 1rem;
   }
 }

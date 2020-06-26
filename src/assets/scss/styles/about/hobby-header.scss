@@ -1,0 +1,48 @@
+@import 'assets/scss/styles/helpers/screen-helpers';
+
+.hobby-header {
+  &__icon {
+    font-size: 3rem;
+
+    @include lg {
+      font-size: 4rem;
+    }
+
+    &-aspect {
+      padding: 6rem;
+      margin-bottom: -5rem;
+      margin-top: -3rem;
+
+      @include sm {
+        padding: 2rem;
+        margin-bottom: -1rem;
+        margin-top: 0;
+      }
+
+      @include md {
+        padding: 4rem;
+        margin-bottom: -2rem;
+        margin-top: -1rem;
+      }
+    }
+
+    &-container {
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      background-color: var(--info);
+      border-radius: 50%;
+    }
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__description {
+    margin: 0;
+  }
+}
