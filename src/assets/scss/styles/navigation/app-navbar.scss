@@ -27,6 +27,7 @@ body {
       @include max-sm {
         display: none;
       }
+
       &.navbar-burger {
         display: none;
 
@@ -41,9 +42,19 @@ body {
       }
     }
   }
+
+  &--adaptive.navbar {
+    &:not(.headroom--not-top) {
+      background-color: transparent !important;
+      box-shadow: none;
+    }
+  }
 }
 
 .headroom {
+  will-change: background-color;
+  transition: background-color 0.4s ease-in-out;
+
   @include md {
     will-change: transform, background-color;
     transition: transform 0.5s ease-in-out, background-color 0.4s ease-in-out;

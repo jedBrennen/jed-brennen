@@ -3,13 +3,6 @@
 $nav-height: 71px;
 $nav-height-sm: 41px;
 
-.headroom {
-  &--top.navbar {
-    background-color: transparent !important;
-    box-shadow: none;
-  }
-}
-
 .header {
   position: relative;
   display: flex;

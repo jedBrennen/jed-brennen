@@ -1,21 +1,25 @@
-import React, { Component } from 'react';
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router';
+import React, { useContext, useEffect } from 'react';
+import {
+  Switch,
+  Route,
+  RouteComponentProps,
+  useRouteMatch,
+} from 'react-router';
 
 import ProjectList from 'views/Projects/ProjectList';
+import { NavbarContext } from 'components/Navigation/AppNavbar';
 
-class Projects extends Component<RouteComponentProps> {
-  render() {
-    const match = this.props.match;
+const Projects: React.FC<RouteComponentProps> = () => {
+  const navbarTheme = useContext(NavbarContext);
+  const match = useRouteMatch();
 
-    return (
-      <Switch>
-        <Route
-          path={match.path}
-          render={(props) => <ProjectList {...props} />}
-        />
-      </Switch>
-    );
-  }
-}
+  useEffect(() => navbarTheme.setTheme('static'), [navbarTheme]);
 
-export default withRouter(Projects);
+  return (
+    <Switch>
+      <Route path={match.path} render={(props) => <ProjectList {...props} />} />
+    </Switch>
+  );
+};
+
+export default Projects;

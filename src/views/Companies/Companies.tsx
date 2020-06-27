@@ -1,21 +1,25 @@
-import React, { Component } from 'react';
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router';
+import React, { useContext, useEffect } from 'react';
+import {
+  Switch,
+  Route,
+  RouteComponentProps,
+  useRouteMatch,
+} from 'react-router';
 
 import CompanyList from 'views/Companies/CompanyList';
+import { NavbarContext } from 'components/Navigation/AppNavbar';
 
-class Companies extends Component<RouteComponentProps> {
-  render() {
-    const match = this.props.match;
+const Companies: React.FC<RouteComponentProps> = () => {
+  const navbarTheme = useContext(NavbarContext);
+  const match = useRouteMatch();
 
-    return (
-      <Switch>
-        <Route
-          path={match.path}
-          render={(props) => <CompanyList {...props} />}
-        />
-      </Switch>
-    );
-  }
-}
+  useEffect(() => navbarTheme.setTheme('static'), [navbarTheme]);
 
-export default withRouter(Companies);
+  return (
+    <Switch>
+      <Route path={match.path} render={(props) => <CompanyList {...props} />} />
+    </Switch>
+  );
+};
+
+export default Companies;

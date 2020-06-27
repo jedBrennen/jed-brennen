@@ -32,8 +32,7 @@ const HobbyHeader = (props: HobbyHeaderProps) => {
                 </AspectBox>
                 <h3 className="hobby-header__title">{hobby.title}</h3>
                 <h5 className="hobby-header__description">
-                  {/* {hobby.description} */}I enjoy trying out new technologies
-                  and frameworks and working on my own coding projects.
+                  {hobby.description}
                 </h5>
               </Col>
             );
