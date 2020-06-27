@@ -34,7 +34,7 @@ export default class OverlayNav extends Component<OverlayNavProps> {
           </Row>
           <Row xs={1} className="overlay-nav__items justify-content-center">
             <div className="text-center">
-              <LinkContainer to={ABOUT}>
+              <LinkContainer to={ABOUT} exact={true}>
                 <Button className="btn-link" onClick={this.props.onClose}>
                   About
                 </Button>

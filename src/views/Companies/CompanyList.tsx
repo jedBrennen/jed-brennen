@@ -1,76 +1,76 @@
-import React, { Component } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import FirebaseService, { FirebaseContext } from 'services/firebase.service';
+import { FirebaseContext } from 'services/firebase.service';
 import CompanyService from 'services/company.service';
 import Company, { Role } from 'models/company.model';
-import List from 'components/List/List';
-import ListItem from 'components/List/ListItem';
+import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
+import Showcase from 'components/Showcase/Showcase';
 
-interface ProjectListState {
-  isLoading: boolean;
-  companies: Company[];
-}
+import 'assets/scss/styles/companies/company-list.scss';
+import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
 
-export default class CompanyList extends Component<
-  RouteComponentProps,
-  ProjectListState
-> {
-  static contextType = FirebaseContext;
-  public context!: React.ContextType<typeof FirebaseContext>;
-  private companyService: CompanyService;
+const getRoleSummary = (roles: Role[]) => {
+  if (!roles.length) return 'No Positions';
 
-  constructor(props: RouteComponentProps, context: FirebaseService) {
-    super(props);
+  roles.sort((a, b) => {
+    if ((a.endDate ?? new Date()) < (b.endDate ?? new Date())) return 1;
+    if ((a.endDate ?? new Date()) > (b.endDate ?? new Date())) return -1;
+    return 0;
+  });
 
-    this.companyService = new CompanyService(context);
-    this.state = {
-      isLoading: false,
-      companies: [],
+  const count = roles.length - 1;
+
+  return (
+    <span>
+      <span className="company-list__role">{roles[0].title}</span>
+      {count ? ` and ${count} other position${count === 1 ? '' : 's'}` : ''}
+    </span>
+  );
+};
+
+const CompanyList: React.FC<RouteComponentProps> = (props) => {
+  const firebaseService = useContext(FirebaseContext);
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigateToCompany = useCallback(
+    (companyId: string) => {
+      const { match, history } = props;
+      history.push(`${match.path}/${companyId}`);
+    },
+    [props]
+  );
+
+  useEffect(() => {
+    const companyService = new CompanyService(firebaseService);
+    setIsLoading(true);
+    const fetchCompanies = async () => {
+      const p = await companyService.getCompleteCompanies();
+      setCompanies(p);
+      setIsLoading(false);
     };
-  }
+    fetchCompanies();
+  }, [firebaseService]);
 
-  componentDidMount() {
-    this.fetchCompanies();
-  }
-
-  render() {
-    return (
-      <Container>
-        <h1 className="mb-3">Companies</h1>
-        <List isLoading={this.state.isLoading}>
-          {this.state.companies.map((company) => (
-            <ListItem
+  return (
+    <Container>
+      <h1 className="mb-3 text-center">Companies</h1>
+      <ShowcaseGrid>
+        {isLoading && <ShowcaseLoading count={3} />}
+        {!isLoading &&
+          companies.map((company) => (
+            <Showcase
               key={company.id}
               title={company.name}
-              subtitle={this.getRoleSummary(company.roles)}
-              body={company.shortDescription}
-              onOpen={() => this.navigateToCompany(company.id)}
+              subtitle={getRoleSummary(company.roles)}
+              onOpen={() => navigateToCompany(company.id)}
             />
           ))}
-        </List>
-      </Container>
-    );
-  }
+      </ShowcaseGrid>
+    </Container>
+  );
+};
 
-  private fetchCompanies(): void {
-    this.setState({ isLoading: true });
-    this.companyService
-      .getCompanies()
-      .then((companies) => this.setState({ companies, isLoading: false }));
-  }
-
-  private navigateToCompany(companyId: string): void {
-    const { match, history } = this.props;
-    history.push(`${match.path}/${companyId}`);
-  }
-
-  private getRoleSummary(roles: Role[]): string {
-    const current = roles.find((role) => !role.endDate);
-    const count = roles.length;
-    return `${current}${
-      count ? `and ${count} other position${count === 1 ? '' : 's'}` : ''
-    }`;
-  }
-}
+export default CompanyList;

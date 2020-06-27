@@ -1,24 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import 'assets/scss/styles/skeleton/skeleton-row.scss';
 
-interface SkeletonRowProps {
-  srAccessible: boolean;
-  className?: string;
-}
+// Workaround whilst defaultProps doesn't work for functional components.
+const SkeletonRow = ({ srAccessible = false, className = '' }) => {
+  return (
+    <div className={`skeleton-row ${className || ''}`} role="status">
+      {srAccessible && <span className="sr-only">Loading</span>}
+    </div>
+  );
+};
 
-export class SkeletonRow extends Component<SkeletonRowProps> {
-  static defaultProps = {
-    srAccessible: false,
-  };
-  render() {
-    return (
-      <div
-        className={`skeleton-row ${this.props.className || ''}`}
-        role="status"
-      >
-        {this.props.srAccessible && <span className="sr-only">Loading</span>}
-      </div>
-    );
-  }
-}
+export default SkeletonRow;

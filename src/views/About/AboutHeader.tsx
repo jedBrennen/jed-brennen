@@ -8,7 +8,7 @@ import { Button, Container, Alert } from 'react-bootstrap';
 import Switch from 'react-bootstrap-switch';
 
 import * as utils from 'utils/Utils';
-import { SkeletonRow } from 'components/Skeleton/SkeletonRow';
+import SkeletonRow from 'components/Skeleton/SkeletonRow';
 
 import 'assets/scss/styles/about/about-header.scss';
 

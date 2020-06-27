@@ -13,7 +13,7 @@ import AppNavbar, {
 
 import 'assets/scss/styles/index.scss';
 
-const Index = () => {
+const Index: React.FC = () => {
   const [theme, setTheme] = useState<NavbarThemeType>('adaptive');
 
   return (

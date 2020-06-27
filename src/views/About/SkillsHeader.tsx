@@ -4,7 +4,7 @@ import { Container, Row } from 'react-bootstrap';
 import Skill from 'models/skill.model';
 import Company from 'models/company.model';
 import Project from 'models/project.model';
-import SkillWheel from 'components/SkillWheel';
+import SkillWheel from 'components/Showcase/SkillWheel';
 
 interface SkillsHeaderProps {
   skills: Skill[];
@@ -50,7 +50,7 @@ const getOrderedSkills = (
   });
 };
 
-const SkillsHeader = (props: SkillsHeaderProps) => {
+const SkillsHeader: React.FC<SkillsHeaderProps> = (props) => {
   const { skills, projects, companies } = props;
   const orderedSkills = getOrderedSkills(skills, projects, companies);
 

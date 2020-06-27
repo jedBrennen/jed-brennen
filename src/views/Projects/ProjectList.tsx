@@ -1,67 +1,56 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import FirebaseService, { FirebaseContext } from 'services/firebase.service';
+import { FirebaseContext } from 'services/firebase.service';
 import ProjectService from 'services/project.service';
 import Project from 'models/project.model';
-import List from 'components/List/List';
-import ListItem from 'components/List/ListItem';
+import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
+import Showcase from 'components/Showcase/Showcase';
+import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
 
-interface ProjectListState {
-  isLoading: boolean;
-  projects: Project[];
-}
+const ProjectList: React.FC<RouteComponentProps> = (props) => {
+  const firebaseService = useContext(FirebaseContext);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-export default class ProjectList extends Component<
-  RouteComponentProps,
-  ProjectListState
-> {
-  static contextType = FirebaseContext;
-  public context!: React.ContextType<typeof FirebaseContext>;
-  private projectService: ProjectService;
+  const navigateToProject = useCallback(
+    (projectId: string) => {
+      const { match, history } = props;
+      history.push(`${match.path}/${projectId}`);
+    },
+    [props]
+  );
 
-  constructor(props: RouteComponentProps, context: FirebaseService) {
-    super(props);
-
-    this.projectService = new ProjectService(context);
-    this.state = {
-      isLoading: false,
-      projects: [],
+  useEffect(() => {
+    const projectService = new ProjectService(firebaseService);
+    setIsLoading(true);
+    const fetchProjects = async () => {
+      const p = await projectService.getCompleteProjects();
+      setProjects(p);
+      setIsLoading(false);
     };
-  }
+    fetchProjects();
+  }, [firebaseService]);
 
-  componentDidMount() {
-    this.fetchProjects();
-  }
-
-  render() {
-    return (
-      <Container>
-        <h1 className="mb-3">Projects</h1>
-        <List<Project> isLoading={this.state.isLoading}>
-          {this.state.projects.map((project) => (
-            <ListItem
+  return (
+    <Container>
+      <h1 className="mb-3 text-center">Projects</h1>
+      <ShowcaseGrid>
+        {isLoading && <ShowcaseLoading count={3} />}
+        {!isLoading &&
+          projects.map((project) => (
+            <Showcase
               key={project.id}
               title={project.title}
-              body={project.shortDescription}
-              onOpen={() => this.navigateToProject(project.id)}
+              subtitle={project.shortDescription}
+              image={project.images.length ? project.images[0] : undefined}
+              onOpen={() => navigateToProject(project.id)}
             />
           ))}
-        </List>
-      </Container>
-    );
-  }
+      </ShowcaseGrid>
+    </Container>
+  );
+};
 
-  private fetchProjects(): void {
-    this.setState({ isLoading: true });
-    this.projectService
-      .getProjects()
-      .then((projects) => this.setState({ projects, isLoading: false }));
-  }
-
-  private navigateToProject(projectId: string): void {
-    const { match, history } = this.props;
-    history.push(`${match.path}/${projectId}`);
-  }
-}
+export default ProjectList;

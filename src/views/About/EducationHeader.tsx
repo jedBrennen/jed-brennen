@@ -1,9 +1,10 @@
 import React from 'react';
-import { Row, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 import Education from 'models/education.model';
 import Project from 'models/project.model';
-import Showcase from 'components/Showcase';
+import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
+import Showcase from 'components/Showcase/Showcase';
 
 import 'assets/scss/styles/about/education-header.scss';
 
@@ -18,7 +19,7 @@ const getProjects = (projectIds: string[], projects: Project[]) => {
     : [];
 };
 
-const EducationHeader = (props: EducationHeaderProps) => {
+const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
   const { education, projects } = props;
   return (
     <section className="header education-header">
@@ -38,7 +39,7 @@ const EducationHeader = (props: EducationHeaderProps) => {
                   );
                 })}
               </div>
-              <Row xs={1} sm={2} lg={3} className="justify-content-center">
+              <ShowcaseGrid>
                 {getProjects(edu.projects, projects).map((project) => {
                   return (
                     <Showcase
@@ -49,7 +50,7 @@ const EducationHeader = (props: EducationHeaderProps) => {
                     />
                   );
                 })}
-              </Row>
+              </ShowcaseGrid>
             </div>
           );
         })}

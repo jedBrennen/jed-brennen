@@ -36,6 +36,7 @@ export default class CompanyService {
         const skillIds = doc.data().skills;
         const company = Company.converter.fromFirestore(doc, {});
         company.skills = await this.aboutService.getSkills(skillIds);
+        company.roles = await this.getRoles(company.id);
         return company;
       })
     );

@@ -22,7 +22,7 @@ const NavbarContext = React.createContext<NavbarTheme>({
   setTheme: () => {},
 });
 
-const AppNavbar = () => {
+const AppNavbar: React.FC = () => {
   const navbarRef = React.createRef<any>();
   const [showOverlay, setShowOverlay] = useState(false);
 

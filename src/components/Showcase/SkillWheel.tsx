@@ -15,7 +15,7 @@ interface SkillWheelProps {
   companies: Company[];
 }
 
-const SkillWheel = (props: SkillWheelProps) => {
+const SkillWheel: React.FC<SkillWheelProps> = (props) => {
   const containerRef = React.createRef<HTMLDivElement>();
   const targetRef = React.createRef<HTMLImageElement>();
   const { skill, projects, companies } = props;

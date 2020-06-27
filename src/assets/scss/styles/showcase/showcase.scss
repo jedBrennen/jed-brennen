@@ -9,8 +9,12 @@
   border: 5px solid;
   border-color: #ffffff00;
 
+  &--no-image,
   &:hover {
     border: 5px solid var(--info);
+  }
+
+  &:hover {
     border-radius: 50%;
   }
 
@@ -43,20 +47,6 @@
     border-radius: 0.5rem;
   }
 
-  &,
-  &__image,
-  &__text,
-  &__button {
-    will-change: opacity, top, bottom, border-radius, border;
-    transition: all 0.2s ease-in;
-  }
-
-  &__text,
-  &__button {
-    opacity: 0;
-    text-align: center;
-  }
-
   &__text {
     padding: 0.5rem;
     padding-top: 0;
@@ -69,5 +59,27 @@
 
   &__button {
     bottom: 0;
+  }
+
+  &__text,
+  &__button {
+    opacity: 0;
+
+    &--no-image {
+      opacity: 1;
+    }
+
+    &,
+    &--no-image {
+      text-align: center;
+    }
+  }
+
+  &,
+  &__image,
+  &__text,
+  &__button {
+    will-change: opacity, top, bottom, border-radius, border;
+    transition: all 0.2s ease-in;
   }
 }

@@ -11,7 +11,7 @@ interface HobbyHeaderProps {
   hobbies: Hobby[];
 }
 
-const HobbyHeader = (props: HobbyHeaderProps) => {
+const HobbyHeader: React.FC<HobbyHeaderProps> = (props) => {
   const { hobbies } = props;
 
   return (
