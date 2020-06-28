@@ -11,6 +11,10 @@
     border: 5px solid var(--info);
     border-radius: 50%;
     box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+
+    &--no-data {
+      cursor: default;
+    }
   }
 
   &__logo {

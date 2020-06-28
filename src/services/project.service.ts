@@ -20,11 +20,17 @@ export default class ProjectService {
 
   public async getProject(projectId: string) {
     const projectDoc = this.collection.doc(projectId);
-    const project = (
-      await projectDoc.withConverter<Project>(Project.converter).get()
-    ).data();
-    if (project) {
-      project.images = await this.getImages(project.id);
+    const snapshot = await projectDoc.get();
+    if (snapshot) {
+      const skillIds = snapshot.data()?.skills;
+      const project = Project.converter.fromFirestore(
+        snapshot as firebase.firestore.QueryDocumentSnapshot<
+          firebase.firestore.DocumentData
+        >,
+        {}
+      );
+      project.skills = await this.aboutService.getSkills(skillIds ?? []);
+      project.images = await this.getImages(snapshot.id);
       return project;
     }
   }
@@ -33,11 +39,11 @@ export default class ProjectService {
     const projectsSnapshot = await this.collection.get();
 
     const projects = await Promise.all(
-      projectsSnapshot.docs.map(async (doc) => {
-        const skillIds = doc.data().skills;
-        const project = Project.converter.fromFirestore(doc, {});
-        project.skills = await this.aboutService.getSkills(skillIds);
-        project.images = await this.getImages(doc.id);
+      projectsSnapshot.docs.map(async (snapshot) => {
+        const skillIds = snapshot.data().skills;
+        const project = Project.converter.fromFirestore(snapshot, {});
+        project.skills = await this.aboutService.getSkills(skillIds ?? []);
+        project.images = await this.getImages(snapshot.id);
         return project;
       })
     );

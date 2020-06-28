@@ -26,11 +26,13 @@ const Showcase: React.FC<ShowcaseProps> = (props) => {
           <h3>{title}</h3>
           <h6>{subtitle}</h6>
         </div>
-        <div className={`showcase__button showcase__button${imageState}`}>
-          <Button variant="outline-info" onClick={onOpen}>
-            Learn More
-          </Button>
-        </div>
+        {onOpen && (
+          <div className={`showcase__button showcase__button${imageState}`}>
+            <Button variant="outline-info" onClick={onOpen}>
+              Learn More
+            </Button>
+          </div>
+        )}
       </div>
     </AspectBox>
   );

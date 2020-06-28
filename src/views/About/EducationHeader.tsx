@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 
 import Education from 'models/education.model';
 import Project from 'models/project.model';
+import Image from 'models/image.model';
 import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
 
@@ -17,6 +18,14 @@ const getProjects = (projectIds: string[], projects: Project[]) => {
   return projectIds.length
     ? projects.filter((project) => projectIds.includes(project.id))
     : [];
+};
+
+const getCoverImage = (images: Image[], coverImage?: string) => {
+  if (coverImage) {
+    return images.find((image) => image.id === coverImage);
+  } else {
+    return images[0];
+  }
 };
 
 const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
@@ -46,7 +55,7 @@ const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
                       key={project.id}
                       title={project.title}
                       subtitle={project.shortDescription ?? ''}
-                      image={project.images[0]}
+                      image={getCoverImage(project.images, project.coverImage)}
                     />
                   );
                 })}

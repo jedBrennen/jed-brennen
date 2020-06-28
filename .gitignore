@@ -21,6 +21,7 @@ firebase.*
 firestore.*
 storage.rules
 !*/**/firebase.*
+!firebase.json
 
 # misc
 .vscode

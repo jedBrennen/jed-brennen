@@ -5,9 +5,18 @@ import { Container } from 'react-bootstrap';
 import { FirebaseContext } from 'services/firebase.service';
 import ProjectService from 'services/project.service';
 import Project from 'models/project.model';
+import Image from 'models/image.model';
 import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
 import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
+
+const getCoverImage = (images: Image[], coverImage?: string) => {
+  if (coverImage) {
+    return images.find((image) => image.id === coverImage);
+  } else {
+    return images[0];
+  }
+};
 
 const ProjectList: React.FC<RouteComponentProps> = (props) => {
   const firebaseService = useContext(FirebaseContext);
@@ -44,7 +53,7 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
               key={project.id}
               title={project.title}
               subtitle={project.shortDescription}
-              image={project.images.length ? project.images[0] : undefined}
+              image={getCoverImage(project.images, project.coverImage)}
               onOpen={() => navigateToProject(project.id)}
             />
           ))}

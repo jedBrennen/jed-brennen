@@ -19,10 +19,16 @@ export default class CompanyService {
 
   public async getCompany(companyId: string) {
     const companyDoc = this.collection.doc(companyId);
-    const company = (
-      await companyDoc.withConverter<Company>(Company.converter).get()
-    ).data();
-    if (company) {
+    const snapshot = await companyDoc.get();
+    if (snapshot) {
+      const skillIds = snapshot.data()?.skills;
+      const company = Company.converter.fromFirestore(
+        snapshot as firebase.firestore.QueryDocumentSnapshot<
+          firebase.firestore.DocumentData
+        >,
+        {}
+      );
+      company.skills = await this.aboutService.getSkills(skillIds);
       company.roles = await this.getRoles(company.id);
       return company;
     }
@@ -32,9 +38,9 @@ export default class CompanyService {
     const companiesSnapshot = await this.collection.get();
 
     const companies = await Promise.all(
-      companiesSnapshot.docs.map(async (doc) => {
-        const skillIds = doc.data().skills;
-        const company = Company.converter.fromFirestore(doc, {});
+      companiesSnapshot.docs.map(async (snapshot) => {
+        const skillIds = snapshot.data().skills;
+        const company = Company.converter.fromFirestore(snapshot, {});
         company.skills = await this.aboutService.getSkills(skillIds);
         company.roles = await this.getRoles(company.id);
         return company;

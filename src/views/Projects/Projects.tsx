@@ -7,6 +7,7 @@ import {
 } from 'react-router';
 
 import ProjectList from 'views/Projects/ProjectList';
+import ProjectDetails from 'views/Projects/ProjectDetails';
 import { NavbarContext } from 'components/Navigation/AppNavbar';
 
 const Projects: React.FC<RouteComponentProps> = () => {
@@ -17,6 +18,10 @@ const Projects: React.FC<RouteComponentProps> = () => {
 
   return (
     <Switch>
+      <Route
+        path={`${match.path}/:projectId`}
+        render={(props) => <ProjectDetails {...props} />}
+      ></Route>
       <Route path={match.path} render={(props) => <ProjectList {...props} />} />
     </Switch>
   );

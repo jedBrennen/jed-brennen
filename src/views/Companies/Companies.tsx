@@ -7,6 +7,7 @@ import {
 } from 'react-router';
 
 import CompanyList from 'views/Companies/CompanyList';
+import CompanyDetails from 'views/Companies/CompanyDetails';
 import { NavbarContext } from 'components/Navigation/AppNavbar';
 
 const Companies: React.FC<RouteComponentProps> = () => {
@@ -17,6 +18,10 @@ const Companies: React.FC<RouteComponentProps> = () => {
 
   return (
     <Switch>
+      <Route
+        path={`${match.path}/:companyId`}
+        render={(props) => <CompanyDetails {...props} />}
+      ></Route>
       <Route path={match.path} render={(props) => <CompanyList {...props} />} />
     </Switch>
   );

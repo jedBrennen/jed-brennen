@@ -6,16 +6,18 @@ export default class Project extends FirebaseModel {
   public title: string;
   public skills: Skill[];
   public images: Image[];
+  public coverImage?: string;
   public shortDescription?: string;
   public longDescription?: string;
   public github?: string;
 
   constructor(
-    id: string,
-    fromServer: boolean,
-    title: string,
-    skills: Skill[],
-    images: Image[],
+    id: string = '',
+    fromServer: boolean = false,
+    title: string = '',
+    skills: Skill[] = [],
+    images: Image[] = [],
+    coverImage?: string,
     shortDescription?: string,
     longDescription?: string,
     github?: string
@@ -24,6 +26,7 @@ export default class Project extends FirebaseModel {
     this.title = title;
     this.skills = skills;
     this.images = images;
+    this.coverImage = coverImage;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
     this.github = github;

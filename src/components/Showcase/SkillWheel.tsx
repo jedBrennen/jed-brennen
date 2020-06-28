@@ -11,32 +11,37 @@ import 'assets/scss/styles/showcase/skill-wheel.scss';
 
 interface SkillWheelProps {
   skill: Skill;
-  projects: Project[];
-  companies: Company[];
+  projects?: Project[];
+  companies?: Company[];
 }
 
 const SkillWheel: React.FC<SkillWheelProps> = (props) => {
   const containerRef = React.createRef<HTMLDivElement>();
   const targetRef = React.createRef<HTMLImageElement>();
-  const { skill, projects, companies } = props;
   const [showOverlay, setShowOverlay] = useState(false);
+  const { skill, projects, companies } = props;
+  const noData = !projects?.length && !companies?.length;
 
   return (
     <AspectBox className="p-4">
-      <Overlay
-        container={containerRef}
-        target={targetRef}
-        placement="top"
-        show={showOverlay}
-      >
-        {(overlayProps) => (
-          <Tooltip id={`tooltip-${skill.name}`} {...overlayProps}>
-            {skill.name}
-          </Tooltip>
-        )}
-      </Overlay>
+      {!noData && (
+        <Overlay
+          container={containerRef}
+          target={targetRef}
+          placement="top"
+          show={showOverlay}
+        >
+          {(overlayProps) => (
+            <Tooltip id={`tooltip-${skill.name}`} {...overlayProps}>
+              {skill.name}
+            </Tooltip>
+          )}
+        </Overlay>
+      )}
       <div
-        className="skill-wheel__container"
+        className={`skill-wheel__container${
+          noData ? ' skill-wheel__container--no-data' : ''
+        }`}
         ref={containerRef}
         onMouseOver={() => setShowOverlay(true)}
         onMouseOut={() => setShowOverlay(false)}
@@ -47,12 +52,17 @@ const SkillWheel: React.FC<SkillWheelProps> = (props) => {
           src={skill.logo}
           alt={`${skill.name}__logo`}
         />
-        <h5 className="skill-wheel__project-count">
-          {getPlurality('Project', projects.length)}
-        </h5>
-        <h5 className="skill-wheel__company-count">
-          {getPlurality('Company', companies.length)}
-        </h5>
+        {noData && <h5 className="skill-wheel__text">{skill.name}</h5>}
+        {projects && !!projects.length && (
+          <h5 className="skill-wheel__text">
+            {getPlurality('Project', projects.length)}
+          </h5>
+        )}
+        {companies && !!companies.length && (
+          <h5 className="skill-wheel__text">
+            {getPlurality('Company', companies.length)}
+          </h5>
+        )}
       </div>
     </AspectBox>
   );

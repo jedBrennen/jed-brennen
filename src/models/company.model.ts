@@ -9,11 +9,11 @@ export default class Company extends FirebaseModel {
   public longDescription?: string;
 
   constructor(
-    id: string,
-    fromServer: boolean,
-    name: string,
-    roles: Role[],
-    skills: Skill[],
+    id: string = '',
+    fromServer: boolean = false,
+    name: string = '',
+    roles: Role[] = [],
+    skills: Skill[] = [],
     shortDescription?: string,
     longDescription?: string
   ) {

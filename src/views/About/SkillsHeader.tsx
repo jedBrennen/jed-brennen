@@ -1,10 +1,11 @@
 import React from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 import Skill from 'models/skill.model';
 import Company from 'models/company.model';
 import Project from 'models/project.model';
 import SkillWheel from 'components/Showcase/SkillWheel';
+import SkillGrid from 'components/Showcase/SkillGrid';
 
 interface SkillsHeaderProps {
   skills: Skill[];
@@ -13,9 +14,10 @@ interface SkillsHeaderProps {
 }
 
 const getProjects = (skillId: string, projects: Project[]): Project[] => {
-  return projects.filter((project) =>
+  const filtered = projects.filter((project) =>
     project.skills.some((skill) => skill.id === skillId)
   );
+  return filtered;
 };
 
 const getCompanies = (skillId: string, companies: Company[]): Company[] => {
@@ -58,12 +60,7 @@ const SkillsHeader: React.FC<SkillsHeaderProps> = (props) => {
     <section className="header skills-header text-center">
       <Container>
         <h1>Skills</h1>
-        <Row
-          xs={2}
-          md={3}
-          lg={4}
-          className="justify-content-center align-items-center"
-        >
+        <SkillGrid>
           {orderedSkills.map((skill) => {
             return (
               <SkillWheel
@@ -74,7 +71,7 @@ const SkillsHeader: React.FC<SkillsHeaderProps> = (props) => {
               />
             );
           })}
-        </Row>
+        </SkillGrid>
       </Container>
     </section>
   );
