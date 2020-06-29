@@ -8,7 +8,7 @@ import { Button, Container, Alert } from 'react-bootstrap';
 import Switch from 'react-bootstrap-switch';
 
 import * as utils from 'utils/Utils';
-import SkeletonRow from 'components/Skeleton/SkeletonRow';
+import Skeleton from 'components/Skeleton/Skeleton';
 
 import 'assets/scss/styles/about/about-header.scss';
 
@@ -72,9 +72,9 @@ export default class AboutHeader extends Component<
   private get loadingHeader(): JSX.Element {
     return (
       <>
-        <SkeletonRow className="about-header__skeleton-title" srAccessible />
-        <SkeletonRow className="about-header__skeleton-title mb-5" />
-        <SkeletonRow className="about-header__skeleton-scroll" />
+        <Skeleton className="about-header__skeleton-title" srAccessible />
+        <Skeleton className="about-header__skeleton-title mb-5" />
+        <Skeleton className="about-header__skeleton-scroll" />
       </>
     );
   }

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Container } from 'react-bootstrap';
+import { useHistory } from 'react-router';
 
+import { PROJECTS } from 'constants/routes';
 import Education from 'models/education.model';
 import Project from 'models/project.model';
 import Image from 'models/image.model';
@@ -29,6 +31,14 @@ const getCoverImage = (images: Image[], coverImage?: string) => {
 };
 
 const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
+  const history = useHistory();
+  const navigateToProject = useCallback(
+    (projectId: string) => {
+      history.push(`${PROJECTS}/${projectId}`);
+    },
+    [history]
+  );
+
   const { education, projects } = props;
   return (
     <section className="header education-header">
@@ -56,6 +66,7 @@ const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
                       title={project.title}
                       subtitle={project.shortDescription ?? ''}
                       image={getCoverImage(project.images, project.coverImage)}
+                      onOpen={() => navigateToProject(project.id)}
                     />
                   );
                 })}

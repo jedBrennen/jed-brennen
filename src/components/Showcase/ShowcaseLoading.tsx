@@ -2,7 +2,7 @@ import React from 'react';
 import { v4 } from 'uuid';
 
 import AspectBox from 'components/Utility/AspectBox';
-import SkeletonRow from 'components/Skeleton/SkeletonRow';
+import Skeleton from 'components/Skeleton/Skeleton';
 
 interface ShowcaseLoadingProps {
   count: number;
@@ -17,7 +17,7 @@ const ShowcaseLoading: React.FC<ShowcaseLoadingProps> = (props) => {
       {arr.map(() => {
         return (
           <AspectBox key={v4()} className="p-3">
-            <SkeletonRow srAccessible className="w-100 h-100" />
+            <Skeleton srAccessible className="w-100 h-100" />
           </AspectBox>
         );
       })}

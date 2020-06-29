@@ -9,6 +9,7 @@ import ProjectService from 'services/project.service';
 import { PROJECTS } from 'constants/routes';
 import Project from 'models/project.model';
 import Details from 'views/Templates/Details';
+import Skeleton from 'components/Skeleton/Skeleton';
 
 import 'assets/scss/styles/projects/project-details.scss';
 
@@ -89,14 +90,16 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
       listTitle="Projects"
       listLocation={PROJECTS}
       links={!!project.github && <GithubLink github={project.github} />}
+      linksLoading={<Skeleton className="project-details__github--loading" />}
       description={project.longDescription}
       descriptionTitle={`The Story Behind ${project.title}`}
       skills={project.skills}
       skillsTitle={`The Tech Behind ${project.title}`}
       error={error}
     >
-      {!!project.images.length && (
-        <Row className="project-details__gallery justify-content-center">
+      {isLoading && <Skeleton className="project-details__gallery--loading" />}
+      {!isLoading && !!project.images.length && (
+        <Row className="project-details__gallery justify-content-center mb-n4">
           <AwesomeSlider>
             {project.images.map((image) => {
               return (

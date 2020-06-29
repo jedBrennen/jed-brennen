@@ -7,6 +7,7 @@ import { formatMonthYear } from 'utils/DateUtils';
 import { COMPANIES } from 'constants/routes';
 import Company from 'models/company.model';
 import Details from 'views/Templates/Details';
+import Skeleton from 'components/Skeleton/Skeleton';
 
 import 'assets/scss/styles/companies/company-details.scss';
 
@@ -74,16 +75,23 @@ const CompanyDetails: React.FC<RouteComponentProps<CompanyDetailsParams>> = (
       skillsTitle={`The Tech I Used At ${company.name}`}
       error={error}
     >
-      {!!company.roles.length &&
+      {isLoading && (
+        <>
+          <Skeleton.H3 />
+          <Skeleton.H5 />
+        </>
+      )}
+      {!isLoading &&
+        !!company.roles.length &&
         company.roles.map((role) => {
           return (
             <>
               <h3>{role.title}</h3>
-              <h4 className="company-details__role-dates">{`${formatMonthYear(
+              <h5 className="company-details__role-dates font-weight-bold">{`${formatMonthYear(
                 role.startDate
               )} - ${
                 role.endDate ? formatMonthYear(role.endDate) : 'Present'
-              }`}</h4>
+              }`}</h5>
             </>
           );
         })}
