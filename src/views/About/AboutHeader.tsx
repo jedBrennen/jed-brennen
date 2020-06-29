@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Particles, {
   InteractivityDetect,
@@ -19,144 +19,146 @@ interface AboutHeaderProps {
   onScroll?: VoidFunction;
 }
 
-interface AboutHeaderState {
-  animate: boolean;
+interface HeaderProps {
+  summary: string;
+  onScroll?: VoidFunction;
 }
 
-export default class AboutHeader extends Component<
-  AboutHeaderProps,
-  AboutHeaderState
-> {
-  static defaultProps = {
-    isLoading: false,
-  };
-  constructor(props: AboutHeaderProps) {
-    super(props);
+const LoadingHeader: React.FC = () => {
+  return (
+    <>
+      <Skeleton className="about-header__skeleton-title" srAccessible />
+      <Skeleton className="about-header__skeleton-title mb-5" />
+      <Skeleton className="about-header__skeleton-scroll" />
+    </>
+  );
+};
 
-    this.state = {
-      animate: !utils.isDev(),
-    };
-  }
-
-  render() {
-    return (
-      <section className="header about-header">
-        <Particles
-          className="particles"
-          height="100vh"
-          {...this.particleParams}
+const LoadedHeader: React.FC<HeaderProps> = (props) => {
+  const { summary, onScroll } = props;
+  return (
+    <>
+      <h1
+        className="text-center mb-4"
+        dangerouslySetInnerHTML={{ __html: summary }}
+      ></h1>
+      <Button
+        variant="secondary"
+        className="about-header__scroll h6 btn-link"
+        onClick={onScroll}
+      >
+        Scroll down to learn more
+        <FontAwesomeIcon
+          icon="angle-double-down"
+          className="about-header__down ml-2"
         />
-        <Container className="header-center text-center about-header__text">
-          {this.props.error ? (
-            <Alert variant="danger">{this.props.error}</Alert>
-          ) : this.props.isLoading ? (
-            this.loadingHeader
-          ) : (
-            this.loadedHeader
-          )}
-        </Container>
-        <span className="about-header__animation-switch h6">
-          Animation:
-          <Switch
-            wrapperClass="ml-2"
-            defaultValue={this.state.animate}
-            onChange={(cmp, enabled) =>
-              this.setState({ animate: enabled ?? false })
-            }
-          ></Switch>
-        </span>
-      </section>
-    );
-  }
+      </Button>
+    </>
+  );
+};
 
-  private get loadingHeader(): JSX.Element {
-    return (
-      <>
-        <Skeleton className="about-header__skeleton-title" srAccessible />
-        <Skeleton className="about-header__skeleton-title mb-5" />
-        <Skeleton className="about-header__skeleton-scroll" />
-      </>
-    );
-  }
+const AboutHeader: React.FC<AboutHeaderProps> = (props) => {
+  const initialRender = useRef(true);
+  const [isAnimating, setIsAnimating] = useState(!utils.isDev());
+  const [particlesAnimating, setParticlesAnimating] = useState(isAnimating);
+  const [fadeParticles, setFadeParticles] = useState(false);
 
-  private get loadedHeader(): JSX.Element {
-    return (
-      <>
-        <h1
-          className="text-center mb-4"
-          dangerouslySetInnerHTML={{ __html: this.props.summary }}
-        ></h1>
-        <Button
-          variant="secondary"
-          className="about-header__scroll h6 btn-link"
-          onClick={this.props.onScroll}
-        >
-          Scroll down to learn more
-          <FontAwesomeIcon
-            icon="angle-double-down"
-            className="about-header__down ml-2"
-          />
-        </Button>
-      </>
-    );
-  }
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
+      setFadeParticles(true);
+      setTimeout(() => setParticlesAnimating(isAnimating), 1000);
+      setTimeout(() => setFadeParticles(false), 2000);
+    }
+  }, [isAnimating]);
 
-  private get particleParams(): ParticlesProps {
-    return {
-      params: {
-        'particles': {
-          'number': {
-            'value': 160,
-            'density': { 'enable': true, 'value_area': 800 },
+  const particleParams: ParticlesProps = {
+    params: {
+      'particles': {
+        'number': {
+          'value': 160,
+          'density': { 'enable': true, 'value_area': 800 },
+        },
+        'color': { 'value': '#FFFFFF' },
+        'shape': {
+          'type': 'circle',
+        },
+        'opacity': {
+          'value': 1,
+          'random': true,
+          'anim': {
+            'enable': true,
+            'speed': 2,
+            'opacity_min': 0,
+            'sync': false,
           },
-          'color': { 'value': '#FFFFFF' },
-          'shape': {
-            'type': 'circle',
-          },
-          'opacity': {
-            'value': 1,
-            'random': true,
-            'anim': {
-              'enable': true,
-              'speed': 2,
-              'opacity_min': 0,
-              'sync': false,
-            },
-          },
-          'size': {
-            'value': 3,
-            'random': true,
-            'anim': {
-              'enable': false,
-              'speed': 4,
-              'size_min': 0.3,
-              'sync': false,
-            },
-          },
-          'line_linked': {
+        },
+        'size': {
+          'value': 3,
+          'random': true,
+          'anim': {
             'enable': false,
-          },
-          'move': {
-            'enable': this.state.animate,
-            'speed': 0,
-          },
-        },
-        'interactivity': {
-          'detect_on': InteractivityDetect.canvas,
-          'events': {
-            'onhover': { 'enable': true, 'mode': 'bubble' },
-          },
-          'modes': {
-            'bubble': {
-              'distance': 150,
-              'size': 3,
-              'duration': 2,
-              'opacity': 0.1,
-            },
+            'speed': 4,
+            'size_min': 0.3,
+            'sync': false,
           },
         },
-        'retina_detect': true,
+        'line_linked': {
+          'enable': false,
+        },
+        'move': {
+          'enable': particlesAnimating,
+          'speed': 0,
+        },
       },
-    };
-  }
-}
+      'interactivity': {
+        'detect_on': InteractivityDetect.canvas,
+        'events': {
+          'onhover': { 'enable': true, 'mode': 'bubble' },
+        },
+        'modes': {
+          'bubble': {
+            'distance': 150,
+            'size': 3,
+            'duration': 2,
+            'opacity': 0.1,
+          },
+        },
+      },
+      'retina_detect': true,
+    },
+  };
+
+  const { isLoading, summary, error, onScroll } = props;
+  return (
+    <section className="header about-header">
+      <div
+        className={`particles-container${
+          fadeParticles ? ' particles--toggling' : ''
+        }`}
+      >
+        <Particles className="particles" height="100vh" {...particleParams} />
+      </div>
+      <Container className="header-center text-center about-header__text">
+        {error ? (
+          <Alert variant="danger">{error}</Alert>
+        ) : isLoading ? (
+          <LoadingHeader />
+        ) : (
+          <LoadedHeader summary={summary} onScroll={onScroll} />
+        )}
+      </Container>
+      <span className="about-header__animation-switch h6">
+        Animation:
+        <Switch
+          wrapperClass="ml-2"
+          defaultValue={isAnimating}
+          onChange={(cmp, enabled) => setIsAnimating(enabled ?? false)}
+        ></Switch>
+      </span>
+    </section>
+  );
+};
+
+export default AboutHeader;

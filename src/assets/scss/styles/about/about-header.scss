@@ -78,6 +78,17 @@
   height: 100vh;
   width: 100%;
   opacity: 0.4;
+
+  &-container {
+    z-index: 0;
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+  }
+
+  &--toggling {
+    animation: fade-out-in 2s linear;
+  }
 }
 
 @keyframes bounce {
@@ -86,5 +97,11 @@
   }
   to {
     transform: translateY(-4px);
+  }
+}
+
+@keyframes fade-out-in {
+  50% {
+    opacity: 0;
   }
 }
