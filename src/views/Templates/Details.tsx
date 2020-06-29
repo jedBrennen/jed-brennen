@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Button } from 'react-bootstrap';
+import { Container, Row, Button, Alert } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -148,6 +148,9 @@ const Details: React.FC<DetailsProps> = (props) => {
             </Button>
           </LinkContainer>
         </Row>
+        <Alert show={!!error} variant="danger" className="mt-3">
+          {error}
+        </Alert>
         {!isLoading && <Title pageTitle={pageTitle} links={links} />}
         {isLoading && <TitleLoading linksLoading={linksLoading} />}
       </header>
