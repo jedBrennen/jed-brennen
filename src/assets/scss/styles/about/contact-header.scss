@@ -1,0 +1,11 @@
+.contact-header {
+  background-color: var(--secondary) !important;
+
+  & h1 {
+    color: white;
+  }
+
+  & .social-link.btn-link {
+    color: white;
+  }
+}

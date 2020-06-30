@@ -5,6 +5,7 @@ import { Button, Container, Row } from 'react-bootstrap';
 import 'assets/scss/styles/navigation/overlay-nav.scss';
 import { LinkContainer } from 'react-router-bootstrap';
 import { PROJECTS, ABOUT, COMPANIES } from 'constants/routes';
+import SocialLink from 'components/Social/SocialLink';
 
 interface OverlayNavProps {
   show: boolean;
@@ -55,24 +56,20 @@ export default class OverlayNav extends Component<OverlayNavProps> {
               </LinkContainer>
             </div>
             <Row className="text-center justify-content-center">
-              <Button
-                as="a"
-                href="https://github.com/jedBrennen"
-                target="_blank"
-                className="btn-link"
-                onClick={this.props.onClose}
-              >
-                <FontAwesomeIcon icon={['fab', 'github']} size="2x" />
-              </Button>
-              <Button
-                as="a"
-                href="https://www.linkedin.com/in/jedbrennen/"
-                target="_blank"
-                className="btn-link"
-                onClick={this.props.onClose}
-              >
-                <FontAwesomeIcon icon={['fab', 'linkedin']} size="2x" />
-              </Button>
+              <SocialLink
+                link="https://github.com/jedBrennen"
+                icon={['fab', 'github']}
+                size="2x"
+                variant="primary"
+                className="p-3"
+              />
+              <SocialLink
+                link="https://www.linkedin.com/in/jedbrennen/"
+                icon={['fab', 'linkedin']}
+                size="2x"
+                variant="primary"
+                className="p-3"
+              />
             </Row>
           </Row>
         </Container>

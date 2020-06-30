@@ -59,7 +59,7 @@ const SkillsHeader: React.FC<SkillsHeaderProps> = (props) => {
   return (
     <section className="header skills-header text-center">
       <Container>
-        <h1>Skills</h1>
+        <h1>Technology</h1>
         <SkillGrid>
           {orderedSkills.map((skill) => {
             return (

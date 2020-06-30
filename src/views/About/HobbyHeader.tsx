@@ -17,7 +17,7 @@ const HobbyHeader: React.FC<HobbyHeaderProps> = (props) => {
   return (
     <section className="header hobby-header text-center">
       <Container>
-        <h1>In My Spare Time</h1>
+        <h1>Spare Time</h1>
         <Row xs={1} sm={2} lg={3} className="justify-content-center">
           {hobbies.map((hobby) => {
             return (

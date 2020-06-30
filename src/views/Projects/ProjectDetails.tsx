@@ -1,24 +1,20 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Row, Button } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 import AwesomeSlider from 'react-awesome-slider';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import ProjectService from 'services/project.service';
 import { PROJECTS } from 'constants/routes';
 import Project from 'models/project.model';
 import Details from 'views/Templates/Details';
+import SocialLink from 'components/Social/SocialLink';
 import Skeleton from 'components/Skeleton/Skeleton';
 
 import 'assets/scss/styles/projects/project-details.scss';
 
 interface ProjectDetailsParams {
   projectId?: string;
-}
-
-interface GithubLinkProps {
-  github: string;
 }
 
 const fetchProject = async (
@@ -51,20 +47,6 @@ const fetchProject = async (
   }
 };
 
-const GithubLink: React.FC<GithubLinkProps> = (props) => {
-  return (
-    <Button
-      as="a"
-      href={props.github}
-      target="_blank"
-      className="project-details__github btn-link"
-      variant="secondary"
-    >
-      <FontAwesomeIcon icon={['fab', 'github']} size="3x" />
-    </Button>
-  );
-};
-
 const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
   props
 ) => {
@@ -89,7 +71,15 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
       pageTitle={project.title}
       listTitle="Projects"
       listLocation={PROJECTS}
-      links={!!project.github && <GithubLink github={project.github} />}
+      links={
+        !!project.github && (
+          <SocialLink
+            link={project.github}
+            icon={['fab', 'github']}
+            size="3x"
+          />
+        )
+      }
       linksLoading={<Skeleton className="project-details__github--loading" />}
       description={project.longDescription}
       descriptionTitle={`The Story Behind ${project.title}`}

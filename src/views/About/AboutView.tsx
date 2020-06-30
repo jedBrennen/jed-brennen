@@ -16,6 +16,7 @@ import AboutHeader from 'views/About/AboutHeader';
 import SkillsHeader from 'views/About/SkillsHeader';
 import EducationHeader from 'views/About/EducationHeader';
 import HobbyHeader from 'views/About/HobbyHeader';
+import ContactHeader from 'views/About/ContactHeader';
 import { NavbarContext } from 'components/Navigation/AppNavbar';
 
 import 'assets/scss/styles/about/about.scss';
@@ -124,6 +125,7 @@ const AboutView: React.FC<RouteComponentProps> = () => {
           />
           <EducationHeader education={education} projects={projects} />
           <HobbyHeader hobbies={hobbies} />
+          <ContactHeader />
         </>
       )}
     </>
