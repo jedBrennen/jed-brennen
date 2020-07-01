@@ -69,7 +69,7 @@ const TitleLoading: React.FC<TitleLoadingProps> = (props) => {
 
   return (
     <Row className="mt-2 mx-0 justify-content-between align-items-end">
-      <Skeleton.H1 srAccessible className="mt-0" />
+      <Skeleton.H1 srAccessible className="details__skeleton-heading mt-0" />
       <span>{linksLoading}</span>
     </Row>
   );
