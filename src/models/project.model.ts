@@ -45,10 +45,26 @@ export default class Project extends FirebaseModel {
         options: firebase.firestore.SnapshotOptions
       ): Project => {
         const project = FirebaseModel.fromFirestore<Project>(snapshot, options);
-        project.skills = [];
-        project.images = [];
-        return project;
+        return new Project(
+          project.id,
+          project.fromServer,
+          project.title,
+          [],
+          [],
+          project.beta,
+          project.coverImage,
+          project.shortDescription,
+          project.longDescription,
+          project.github
+        );
       },
     };
+  }
+
+  public compareTo(other: Project, desc?: boolean): number {
+    let result = 0;
+    if (this.title < other.title) result = -1;
+    if (this.title > other.title) result = 1;
+    return (result *= desc ? -1 : 1);
   }
 }

@@ -11,4 +11,26 @@ export default class About extends FirebaseModel {
     super(id, fromServer);
     this.summary = summary;
   }
+
+  public static get converter(): firebase.firestore.FirestoreDataConverter<
+    About
+  > {
+    return {
+      toFirestore: FirebaseModel.toFirestore,
+      fromFirestore: (
+        snapshot: firebase.firestore.QueryDocumentSnapshot,
+        options: firebase.firestore.SnapshotOptions
+      ): About => {
+        const about = FirebaseModel.fromFirestore<About>(snapshot, options);
+        return new About(about.id, about.fromServer, about.summary);
+      },
+    };
+  }
+
+  public compareTo(other: About, desc?: boolean): number {
+    let result = 0;
+    if (this.summary < other.summary) result = -1;
+    if (this.summary > other.summary) result = 1;
+    return (result *= desc ? -1 : 1);
+  }
 }

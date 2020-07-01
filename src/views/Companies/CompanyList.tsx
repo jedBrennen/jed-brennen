@@ -1,24 +1,47 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, Alert } from 'react-bootstrap';
 
-import { FirebaseContext } from 'services/firebase.service';
+import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import CompanyService from 'services/company.service';
 import Company, { Role } from 'models/company.model';
 import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
+import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
 
 import 'assets/scss/styles/companies/company-list.scss';
-import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
+
+const fetchCompanies = async (
+  firebaseService: FirebaseService,
+  onData: (data: Company[]) => void,
+  onError: (error: string) => void,
+  onCompletion?: () => void
+) => {
+  const companyService = new CompanyService(firebaseService);
+  try {
+    const companies = await companyService.getCompleteCompanies();
+    companies.forEach((company) =>
+      company.roles.sort((a, b) => a.compareTo(b, true))
+    );
+    companies.sort((a, b) => {
+      if (!a.roles.length) return -1;
+      if (!b.roles.length) return 1;
+      return a.roles[0].compareTo(b.roles[0], true);
+    });
+    onData(companies);
+  } catch {
+    onError(
+      'Whoops, something went when fetching those companies. Please refresh and try again.'
+    );
+  } finally {
+    onCompletion && onCompletion();
+  }
+};
 
 const getRoleSummary = (roles: Role[]) => {
   if (!roles.length) return 'No Positions';
 
-  roles.sort((a, b) => {
-    if ((a.endDate ?? new Date()) < (b.endDate ?? new Date())) return 1;
-    if ((a.endDate ?? new Date()) > (b.endDate ?? new Date())) return -1;
-    return 0;
-  });
+  roles.sort((a, b) => a.compareTo(b, true));
 
   const count = roles.length - 1;
 
@@ -34,6 +57,7 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
   const firebaseService = useContext(FirebaseContext);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
 
   const navigateToCompany = useCallback(
     (companyId: string) => {
@@ -44,19 +68,18 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
   );
 
   useEffect(() => {
-    const companyService = new CompanyService(firebaseService);
     setIsLoading(true);
-    const fetchCompanies = async () => {
-      const p = await companyService.getCompleteCompanies();
-      setCompanies(p);
-      setIsLoading(false);
-    };
-    fetchCompanies();
+    fetchCompanies(firebaseService, setCompanies, setError, () =>
+      setIsLoading(false)
+    );
   }, [firebaseService]);
 
   return (
     <Container>
       <h1 className="mb-3 text-center">Companies</h1>
+      <Alert show={!!error} variant="danger" className="mt-3">
+        {error}
+      </Alert>
       <ShowcaseGrid>
         {isLoading && <ShowcaseLoading count={3} />}
         {!isLoading &&

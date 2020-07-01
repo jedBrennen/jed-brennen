@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, Badge } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import Image from 'models/image.model';
 import AspectBox from 'components/Utility/AspectBox';

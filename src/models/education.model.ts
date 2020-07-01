@@ -14,7 +14,7 @@ export default class Education extends FirebaseModel {
     startDate: Date = new Date(),
     projects: string[] = [],
     courses: Course[] = [],
-    endDate: Date
+    endDate?: Date
   ) {
     super(id, fromServer);
     this.institution = institution;
@@ -37,10 +37,26 @@ export default class Education extends FirebaseModel {
           snapshot,
           options
         );
-        education.courses = [];
-        return education;
+        return new Education(
+          education.id,
+          education.fromServer,
+          education.institution,
+          education.startDate,
+          education.projects,
+          [],
+          education.endDate
+        );
       },
     };
+  }
+
+  public compareTo(other: Education, desc?: boolean): number {
+    let result = 0;
+    if ((this.endDate ?? new Date()) < (other.endDate ?? new Date()))
+      result = -1;
+    if ((this.endDate ?? new Date()) > (other.endDate ?? new Date()))
+      result = 1;
+    return (result *= desc ? -1 : 1);
   }
 }
 
@@ -58,5 +74,32 @@ export class Course extends FirebaseModel {
     super(id, fromServer);
     this.name = name;
     this.grade = grade;
+  }
+
+  public static get converter(): firebase.firestore.FirestoreDataConverter<
+    Course
+  > {
+    return {
+      toFirestore: FirebaseModel.toFirestore,
+      fromFirestore: (
+        snapshot: firebase.firestore.QueryDocumentSnapshot,
+        options: firebase.firestore.SnapshotOptions
+      ): Course => {
+        const course = FirebaseModel.fromFirestore<Course>(snapshot, options);
+        return new Course(
+          course.id,
+          course.fromServer,
+          course.name,
+          course.grade
+        );
+      },
+    };
+  }
+
+  public compareTo(other: Course, desc?: boolean): number {
+    let result = 0;
+    if (this.name < other.name) result = -1;
+    if (this.name > other.name) result = 1;
+    return (result *= desc ? -1 : 1);
   }
 }

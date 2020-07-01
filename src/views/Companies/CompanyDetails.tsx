@@ -25,16 +25,8 @@ const fetchCompany = async (
   try {
     const companyService = new CompanyService(firebaseService);
     const company = await companyService.getCompany(companyId);
-    company?.skills?.sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return -1;
-      return 0;
-    });
-    company?.roles?.sort((a, b) => {
-      if (a.startDate < b.startDate) return 1;
-      if (a.startDate > b.startDate) return -1;
-      return 0;
-    });
+    company?.skills?.sort((a, b) => a.compareTo(b));
+    company?.roles?.sort((a, b) => a.compareTo(b, true));
     onData(company!);
   } catch {
     onError(

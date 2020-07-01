@@ -35,9 +35,21 @@ export default class Skill extends FirebaseModel {
       ): Skill => {
         const skill = FirebaseModel.fromFirestore<Skill>(snapshot, options);
         const skillArea = (skill.area as any) as keyof typeof SkillArea;
-        skill.area = SkillArea[skillArea];
-        return skill;
+        return new Skill(
+          skill.id,
+          skill.fromServer,
+          skill.name,
+          SkillArea[skillArea],
+          skill.logo
+        );
       },
     };
+  }
+
+  public compareTo(other: Skill, desc?: boolean): number {
+    let result = 0;
+    if (this.name < other.name) result = -1;
+    if (this.name > other.name) result = 1;
+    return (result *= desc ? -1 : 1);
   }
 }

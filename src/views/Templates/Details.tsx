@@ -98,6 +98,7 @@ const DescriptionLoading: React.FC = () => {
 
 const SkillDetails: React.FC<SkillDetailsProps> = (props) => {
   const { skills, skillsTitle } = props;
+  skills.sort((a, b) => a.compareTo(b));
 
   return (
     <>

@@ -7,6 +7,16 @@ export default abstract class FirebaseModel {
     this.fromServer = fromServer;
   }
 
+  /**
+   * Compares this object with other, defaulting ascending order.
+   *
+   * Returns -1 if this is less than other, 1 if this is greater than other, 0 if equal.
+   * Signs are flipped for descending.
+   * @param other - the object to compare to
+   * @param desc - optionally compare in descending order
+   */
+  public abstract compareTo(other: FirebaseModel, desc?: boolean): number;
+
   public static get converter(): firebase.firestore.FirestoreDataConverter<
     any
   > {

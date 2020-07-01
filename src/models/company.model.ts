@@ -35,11 +35,24 @@ export default class Company extends FirebaseModel {
         options: firebase.firestore.SnapshotOptions
       ): Company {
         const company = FirebaseModel.fromFirestore<Company>(snapshot, options);
-        company.roles = [];
-        company.skills = [];
-        return company;
+        return new Company(
+          company.id,
+          company.fromServer,
+          company.name,
+          [],
+          [],
+          company.shortDescription,
+          company.longDescription
+        );
       },
     };
+  }
+
+  public compareTo(other: Company, desc?: boolean): number {
+    let result = 0;
+    if (this.name < other.name) result = -1;
+    if (this.name > other.name) result = 1;
+    return (result *= desc ? -1 : 1);
   }
 }
 
@@ -76,8 +89,23 @@ export class Role extends FirebaseModel {
         if (role.endDate) {
           role.endDate = new Date((role.endDate as any).seconds * 1000);
         }
-        return role;
+        return new Role(
+          role.id,
+          role.fromServer,
+          role.title,
+          role.startDate,
+          role.endDate
+        );
       },
     };
+  }
+
+  public compareTo(other: Role, desc?: boolean): number {
+    let result = 0;
+    if ((this.endDate ?? new Date()) < (other.endDate ?? new Date()))
+      result = -1;
+    if ((this.endDate ?? new Date()) > (other.endDate ?? new Date()))
+      result = 1;
+    return (result *= desc ? -1 : 1);
   }
 }

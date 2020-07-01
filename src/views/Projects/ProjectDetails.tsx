@@ -28,11 +28,6 @@ const fetchProject = async (
   try {
     const projectService = new ProjectService(firebaseService);
     const project = await projectService.getProject(projectId);
-    project?.skills?.sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return -1;
-      return 0;
-    });
     project?.images?.sort((a, b) => {
       if (a.id === project.coverImage) return -1;
       if (b.id === project.coverImage) return 1;
