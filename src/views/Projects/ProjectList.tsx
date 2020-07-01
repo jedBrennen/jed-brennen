@@ -9,6 +9,7 @@ import Image from 'models/image.model';
 import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
 import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
+import BetaBadge from 'components/Badges/BetaBadge';
 
 const getCoverImage = (images: Image[], coverImage?: string) => {
   if (coverImage) {
@@ -52,6 +53,9 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
             <Showcase
               key={project.id}
               title={project.title}
+              titleBadge={
+                project.beta ? <BetaBadge>Beta</BetaBadge> : undefined
+              }
               subtitle={project.shortDescription}
               image={getCoverImage(project.images, project.coverImage)}
               onOpen={() => navigateToProject(project.id)}

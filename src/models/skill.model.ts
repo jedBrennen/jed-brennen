@@ -23,4 +23,21 @@ export default class Skill extends FirebaseModel {
     this.area = area;
     this.logo = logo;
   }
+
+  public static get converter(): firebase.firestore.FirestoreDataConverter<
+    Skill
+  > {
+    return {
+      toFirestore: FirebaseModel.toFirestore,
+      fromFirestore: (
+        snapshot: firebase.firestore.QueryDocumentSnapshot,
+        options: firebase.firestore.SnapshotOptions
+      ): Skill => {
+        const skill = FirebaseModel.fromFirestore<Skill>(snapshot, options);
+        const skillArea = (skill.area as any) as keyof typeof SkillArea;
+        skill.area = SkillArea[skillArea];
+        return skill;
+      },
+    };
+  }
 }

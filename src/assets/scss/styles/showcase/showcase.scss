@@ -57,6 +57,18 @@
     }
   }
 
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    & .badge {
+      padding: 0.4em 0.9em;
+    }
+  }
+
   &__button {
     bottom: 0;
   }

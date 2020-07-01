@@ -53,13 +53,20 @@ const SkillWheel: React.FC<SkillWheelProps> = (props) => {
           alt={`${skill.name}__logo`}
         />
         {noData && <h5 className="skill-wheel__text">{skill.name}</h5>}
+        {!noData && <span className="sr-only">{skill.name}</span>}
         {projects && !!projects.length && (
           <h5 className="skill-wheel__text">
+            <span className="sr-only">
+              {getPlurality('Project', projects.length)}
+            </span>
             {getPlurality('Project', projects.length)}
           </h5>
         )}
         {companies && !!companies.length && (
           <h5 className="skill-wheel__text">
+            <span className="sr-only">
+              {getPlurality('Company', companies.length)}
+            </span>
             {getPlurality('Company', companies.length)}
           </h5>
         )}

@@ -7,6 +7,7 @@ import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import ProjectService from 'services/project.service';
 import { PROJECTS } from 'constants/routes';
 import Project from 'models/project.model';
+import { ImageOrientation } from 'models/image.model';
 import Details from 'views/Templates/Details';
 import SocialLink from 'components/Social/SocialLink';
 import Skeleton from 'components/Skeleton/Skeleton';
@@ -69,6 +70,7 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
     <Details
       isLoading={isLoading}
       pageTitle={project.title}
+      pageBadge={project.beta ? 'Beta' : ''}
       listTitle="Projects"
       listLocation={PROJECTS}
       links={
@@ -87,7 +89,11 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
       skillsTitle={`The Tech Behind ${project.title}`}
       error={error}
     >
-      {isLoading && <Skeleton className="project-details__gallery--loading" />}
+      {isLoading && (
+        <Row>
+          <Skeleton className="project-details__gallery--loading" />
+        </Row>
+      )}
       {!isLoading && !!project.images.length && (
         <Row className="project-details__gallery justify-content-center mb-n4">
           <AwesomeSlider>
@@ -97,7 +103,15 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
                   key={image.id}
                   className="project-details__image-container"
                 >
-                  <img src={image.src} alt={image.alt} />
+                  <img
+                    className={`project-details__image${
+                      image.orientation === ImageOrientation.Portrait
+                        ? '--portrait'
+                        : ''
+                    }`}
+                    src={image.src}
+                    alt={image.alt}
+                  />
                 </div>
               );
             })}

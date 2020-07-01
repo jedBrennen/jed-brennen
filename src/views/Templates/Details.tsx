@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Button, Alert, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -16,6 +16,7 @@ interface DetailsProps {
   listTitle: string;
   listLocation: string;
   pageTitle?: string;
+  pageBadge?: string;
   links?: React.ReactNode;
   linksLoading?: React.ReactNode;
   descriptionTitle?: string;
@@ -27,6 +28,7 @@ interface DetailsProps {
 
 interface TitleProps {
   pageTitle?: string;
+  pageBadge?: string;
   links?: React.ReactNode;
 }
 
@@ -45,11 +47,18 @@ interface SkillDetailsProps {
 }
 
 const Title: React.FC<TitleProps> = (props) => {
-  const { pageTitle, links } = props;
+  const { pageTitle, pageBadge, links } = props;
 
   return (
-    <Row className="mt-0 h1 justify-content-between align-items-end">
-      <span>{pageTitle}</span>
+    <Row className="mx-0 justify-content-between align-items-end">
+      <div className="details__title">
+        <span className="mt-0 mr-2 h1">{pageTitle}</span>
+        {!!pageBadge && (
+          <Badge className="mb-0" variant="warning">
+            {pageBadge}
+          </Badge>
+        )}
+      </div>
       <span>{links}</span>
     </Row>
   );
@@ -59,7 +68,7 @@ const TitleLoading: React.FC<TitleLoadingProps> = (props) => {
   const { linksLoading } = props;
 
   return (
-    <Row className="mt-2 h1 justify-content-between align-items-end">
+    <Row className="mt-2 mx-0 justify-content-between align-items-end">
       <Skeleton.H1 srAccessible className="mt-0" />
       <span>{linksLoading}</span>
     </Row>
@@ -71,8 +80,8 @@ const Description: React.FC<DescriptionProps> = (props) => {
 
   return (
     <>
-      <h2>{descriptionTitle}</h2>
-      <div dangerouslySetInnerHTML={{ __html: description }} />
+      <h2 className="mb-2">{descriptionTitle}</h2>
+      <p dangerouslySetInnerHTML={{ __html: description }} />
     </>
   );
 };
@@ -116,9 +125,10 @@ const SkillDetailsLoading: React.FC = () => {
 const Details: React.FC<DetailsProps> = (props) => {
   const {
     isLoading,
-    pageTitle,
     listTitle,
     listLocation,
+    pageTitle,
+    pageBadge,
     links,
     linksLoading,
     skills,
@@ -132,7 +142,7 @@ const Details: React.FC<DetailsProps> = (props) => {
   return (
     <Container>
       <header className="my-4">
-        <Row className="mt-0 h1">
+        <Row className="mx-0">
           <LinkContainer
             to={listLocation}
             exact={true}
@@ -151,11 +161,13 @@ const Details: React.FC<DetailsProps> = (props) => {
         <Alert show={!!error} variant="danger" className="mt-3">
           {error}
         </Alert>
-        {!isLoading && <Title pageTitle={pageTitle} links={links} />}
+        {!isLoading && (
+          <Title pageTitle={pageTitle} pageBadge={pageBadge} links={links} />
+        )}
         {isLoading && <TitleLoading linksLoading={linksLoading} />}
       </header>
       {children && <section>{children}</section>}
-      <section className="mb-4">
+      <section>
         {!isLoading && description && (
           <Description
             description={description}

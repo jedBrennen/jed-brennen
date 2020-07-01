@@ -1,7 +1,7 @@
 import FirebaseService from 'services/firebase.service';
 import AboutService from 'services/about.service';
 import Project from 'models/project.model';
-import Image from 'models/image.model';
+import Image, { ImageOrientation } from 'models/image.model';
 
 export default class ProjectService {
   static readonly collectionName = 'projects';

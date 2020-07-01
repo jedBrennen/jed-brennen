@@ -8,6 +8,7 @@ import Project from 'models/project.model';
 import Image from 'models/image.model';
 import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
+import BetaBadge from 'components/Badges/BetaBadge';
 
 import 'assets/scss/styles/about/education-header.scss';
 
@@ -64,6 +65,9 @@ const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
                     <Showcase
                       key={project.id}
                       title={project.title}
+                      titleBadge={
+                        project.beta ? <BetaBadge>Beta</BetaBadge> : undefined
+                      }
                       subtitle={project.shortDescription ?? ''}
                       image={getCoverImage(project.images, project.coverImage)}
                       onOpen={() => navigateToProject(project.id)}
