@@ -59,6 +59,7 @@ const CompanyDetails: React.FC<RouteComponentProps<CompanyDetailsParams>> = (
     <Details
       isLoading={isLoading}
       pageTitle={company.name}
+      pageSubtitle={company.shortDescription}
       listTitle="Companies"
       listLocation={COMPANIES}
       description={company.longDescription}

@@ -65,6 +65,7 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
     <Details
       isLoading={isLoading}
       pageTitle={project.title}
+      pageSubtitle={project.shortDescription}
       pageBadge={project.beta ? 'Beta' : ''}
       listTitle="Projects"
       listLocation={PROJECTS}

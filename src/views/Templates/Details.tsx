@@ -16,6 +16,7 @@ interface DetailsProps {
   listTitle: string;
   listLocation: string;
   pageTitle?: string;
+  pageSubtitle?: string;
   pageBadge?: string;
   links?: React.ReactNode;
   linksLoading?: React.ReactNode;
@@ -28,6 +29,7 @@ interface DetailsProps {
 
 interface TitleProps {
   pageTitle?: string;
+  pageSubtitle?: string;
   pageBadge?: string;
   links?: React.ReactNode;
 }
@@ -47,20 +49,27 @@ interface SkillDetailsProps {
 }
 
 const Title: React.FC<TitleProps> = (props) => {
-  const { pageTitle, pageBadge, links } = props;
+  const { pageTitle, pageSubtitle, pageBadge, links } = props;
 
   return (
-    <Row className="mx-0 justify-content-between align-items-end">
-      <div className="details__title">
-        <span className="mt-0 mr-2 h1">{pageTitle}</span>
-        {!!pageBadge && (
-          <Badge className="mb-0" variant="warning">
-            {pageBadge}
-          </Badge>
-        )}
-      </div>
-      <span>{links}</span>
-    </Row>
+    <>
+      <Row className="mx-0 justify-content-between align-items-end">
+        <div className="details__title">
+          <span className="mt-0 mr-2 h1">{pageTitle}</span>
+          {!!pageBadge && (
+            <Badge className="mb-0" variant="warning">
+              {pageBadge}
+            </Badge>
+          )}
+        </div>
+        <span>{links}</span>
+      </Row>
+      {!!pageSubtitle && (
+        <Row className="mt-2 mx-0">
+          <h6>{pageSubtitle}</h6>
+        </Row>
+      )}
+    </>
   );
 };
 
@@ -68,10 +77,18 @@ const TitleLoading: React.FC<TitleLoadingProps> = (props) => {
   const { linksLoading } = props;
 
   return (
-    <Row className="mt-2 mx-0 justify-content-between align-items-end">
-      <Skeleton.H1 srAccessible className="details__skeleton-heading mt-0" />
-      <span>{linksLoading}</span>
-    </Row>
+    <>
+      <Row className="mt-2 mx-0 justify-content-between align-items-end">
+        <Skeleton.H1 srAccessible className="details__skeleton-heading mt-0" />
+        <span>{linksLoading}</span>
+      </Row>
+      <Row className="mt-2 mx-0">
+        <Skeleton.H6
+          srAccessible
+          className="details__skeleton-heading mt-0 w-100"
+        />
+      </Row>
+    </>
   );
 };
 
@@ -129,6 +146,7 @@ const Details: React.FC<DetailsProps> = (props) => {
     listTitle,
     listLocation,
     pageTitle,
+    pageSubtitle,
     pageBadge,
     links,
     linksLoading,
@@ -163,7 +181,12 @@ const Details: React.FC<DetailsProps> = (props) => {
           {error}
         </Alert>
         {!isLoading && (
-          <Title pageTitle={pageTitle} pageBadge={pageBadge} links={links} />
+          <Title
+            pageTitle={pageTitle}
+            pageSubtitle={pageSubtitle}
+            pageBadge={pageBadge}
+            links={links}
+          />
         )}
         {isLoading && <TitleLoading linksLoading={linksLoading} />}
       </header>
