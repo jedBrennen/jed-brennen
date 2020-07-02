@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import React from 'react';
 
@@ -15,15 +15,11 @@ const firebaseConfig = {
 
 export default class FirebaseService {
   public db: firebase.firestore.Firestore;
-  public auth: firebase.auth.Auth;
-  public storage: firebase.storage.Storage;
   private static instance: FirebaseService;
 
   private constructor() {
     firebase.initializeApp(firebaseConfig);
     this.db = firebase.firestore();
-    this.auth = firebase.auth();
-    this.storage = firebase.storage();
   }
 
   public static getInstance(): FirebaseService {
