@@ -5,6 +5,7 @@ import AwesomeSlider from 'react-awesome-slider';
 
 import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import ProjectService from 'services/project.service';
+import { DOCUMENT_TITLE } from 'constants/constants';
 import { PROJECTS } from 'constants/routes';
 import Project from 'models/project.model';
 import { ImageOrientation } from 'models/image.model';
@@ -51,6 +52,14 @@ const ProjectDetails: React.FC<RouteComponentProps<ProjectDetailsParams>> = (
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const { projectId } = props.match.params;
+
+  useEffect(() => {
+    if (isLoading || !project.title) {
+      document.title = `${DOCUMENT_TITLE} | Loading...`;
+    } else {
+      document.title = `${DOCUMENT_TITLE} | ${project.title}`;
+    }
+  }, [isLoading, project]);
 
   useEffect(() => {
     if (projectId) {

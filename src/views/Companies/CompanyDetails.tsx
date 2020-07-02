@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import FirebaseService, { FirebaseContext } from 'services/firebase.service';
 import CompanyService from 'services/company.service';
 import { formatMonthYear } from 'utils/DateUtils';
+import { DOCUMENT_TITLE } from 'constants/constants';
 import { COMPANIES } from 'constants/routes';
 import Company from 'models/company.model';
 import Details from 'views/Templates/Details';
@@ -45,6 +46,14 @@ const CompanyDetails: React.FC<RouteComponentProps<CompanyDetailsParams>> = (
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const { companyId } = props.match.params;
+
+  useEffect(() => {
+    if (isLoading || !company.name) {
+      document.title = `${DOCUMENT_TITLE} | Loading...`;
+    } else {
+      document.title = `${DOCUMENT_TITLE} | ${company.name}`;
+    }
+  }, [isLoading, company]);
 
   useEffect(() => {
     if (companyId) {

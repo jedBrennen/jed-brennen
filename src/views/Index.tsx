@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 
+import { DOCUMENT_TITLE } from 'constants/constants';
 import { ABOUT, PROJECTS, COMPANIES } from 'constants/routes';
 import AboutView from 'views/About/AboutView';
 import Projects from 'views/Projects/Projects';
@@ -26,15 +27,24 @@ const Index: React.FC = () => {
               <Route
                 exact
                 path={ABOUT}
-                render={(props) => <AboutView {...props} />}
+                render={(props) => {
+                  document.title = `${DOCUMENT_TITLE} | About`;
+                  return <AboutView {...props} />;
+                }}
               />
               <Route
                 path={PROJECTS}
-                render={(props) => <Projects {...props} />}
+                render={(props) => {
+                  document.title = `${DOCUMENT_TITLE} | Projects`;
+                  return <Projects {...props} />;
+                }}
               />
               <Route
                 path={COMPANIES}
-                render={(props) => <Companies {...props} />}
+                render={(props) => {
+                  document.title = `${DOCUMENT_TITLE} | Companies`;
+                  return <Companies {...props} />;
+                }}
               />
               <Redirect to={ABOUT} />
             </Switch>
