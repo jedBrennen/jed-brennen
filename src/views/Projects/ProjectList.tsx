@@ -10,6 +10,7 @@ import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
 import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
 import BetaBadge from 'components/Badges/BetaBadge';
+import Filter, { FilterOption } from 'components/Utility/Filter';
 
 const fetchProjects = async (
   firebaseService: FirebaseService,
@@ -41,7 +42,12 @@ const getCoverImage = (images: Image[], coverImage?: string) => {
 
 const ProjectList: React.FC<RouteComponentProps> = (props) => {
   const firebaseService = useContext(FirebaseContext);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<{
+    projects: Project[];
+    options: FilterOption[];
+  }>({ projects: [], options: [] });
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [filter, setFilter] = useState<FilterOption>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
@@ -55,10 +61,36 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchProjects(firebaseService, setProjects, setError, () =>
-      setIsLoading(false)
+    fetchProjects(
+      firebaseService,
+      (ps) => {
+        const options: FilterOption[] = [];
+        ps.forEach((project) =>
+          project.skills
+            .filter(
+              (skill) => !options.some((option) => option.value === skill.id)
+            )
+            .forEach((skill) =>
+              options.push({ label: skill.name, value: skill.id })
+            )
+        );
+        setProjects({ projects: ps, options });
+        setFilteredProjects(ps);
+      },
+      setError,
+      () => setIsLoading(false)
     );
   }, [firebaseService]);
+
+  useEffect(() => {
+    setFilteredProjects(
+      filter
+        ? projects.projects.filter((project) =>
+            project.skills.some((skill) => skill.id === filter?.value)
+          )
+        : projects.projects
+    );
+  }, [filter, projects.projects]);
 
   return (
     <Container>
@@ -66,21 +98,32 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
       <Alert show={!!error} variant="danger" className="mt-3">
         {error}
       </Alert>
-      <ShowcaseGrid>
+      <Filter
+        options={projects.options}
+        selectedOption={filter}
+        onChange={(option) =>
+          option === filter ? setFilter(undefined) : setFilter(option)
+        }
+      />
+      <ShowcaseGrid
+        showcases={
+          !isLoading
+            ? filteredProjects.map((project) => (
+                <Showcase
+                  key={project.id}
+                  title={project.title}
+                  titleBadge={
+                    project.beta ? <BetaBadge>Beta</BetaBadge> : undefined
+                  }
+                  subtitle={project.shortDescription}
+                  image={getCoverImage(project.images, project.coverImage)}
+                  onOpen={() => navigateToProject(project.id)}
+                />
+              ))
+            : []
+        }
+      >
         {isLoading && <ShowcaseLoading count={3} />}
-        {!isLoading &&
-          projects.map((project) => (
-            <Showcase
-              key={project.id}
-              title={project.title}
-              titleBadge={
-                project.beta ? <BetaBadge>Beta</BetaBadge> : undefined
-              }
-              subtitle={project.shortDescription}
-              image={getCoverImage(project.images, project.coverImage)}
-              onOpen={() => navigateToProject(project.id)}
-            />
-          ))}
       </ShowcaseGrid>
     </Container>
   );

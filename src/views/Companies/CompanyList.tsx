@@ -8,6 +8,7 @@ import Company, { Role } from 'models/company.model';
 import ShowcaseGrid from 'components/Showcase/ShowcaseGrid';
 import Showcase from 'components/Showcase/Showcase';
 import ShowcaseLoading from 'components/Showcase/ShowcaseLoading';
+import Filter, { FilterOption } from 'components/Utility/Filter';
 
 import 'assets/scss/styles/companies/company-list.scss';
 
@@ -55,7 +56,12 @@ const getRoleSummary = (roles: Role[]) => {
 
 const CompanyList: React.FC<RouteComponentProps> = (props) => {
   const firebaseService = useContext(FirebaseContext);
-  const [companies, setCompanies] = useState<Company[]>([]);
+  const [companies, setCompanies] = useState<{
+    companies: Company[];
+    options: FilterOption[];
+  }>({ companies: [], options: [] });
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
+  const [filter, setFilter] = useState<FilterOption>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
@@ -69,10 +75,36 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchCompanies(firebaseService, setCompanies, setError, () =>
-      setIsLoading(false)
+    fetchCompanies(
+      firebaseService,
+      (cs) => {
+        const options: FilterOption[] = [];
+        cs.forEach((company) =>
+          company.skills
+            .filter(
+              (skill) => !options.some((option) => option.value === skill.id)
+            )
+            .forEach((skill) =>
+              options.push({ label: skill.name, value: skill.id })
+            )
+        );
+        setCompanies({ companies: cs, options });
+        setFilteredCompanies(cs);
+      },
+      setError,
+      () => setIsLoading(false)
     );
   }, [firebaseService]);
+
+  useEffect(() => {
+    setFilteredCompanies(
+      filter
+        ? companies.companies.filter((company) =>
+            company.skills.some((skill) => skill.id === filter?.value)
+          )
+        : companies.companies
+    );
+  }, [filter, companies.companies]);
 
   return (
     <Container>
@@ -80,17 +112,28 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
       <Alert show={!!error} variant="danger" className="mt-3">
         {error}
       </Alert>
-      <ShowcaseGrid>
+      <Filter
+        options={companies.options}
+        selectedOption={filter}
+        onChange={(option) =>
+          option === filter ? setFilter(undefined) : setFilter(option)
+        }
+      />
+      <ShowcaseGrid
+        showcases={
+          !isLoading
+            ? filteredCompanies.map((company) => (
+                <Showcase
+                  key={company.id}
+                  title={company.name}
+                  subtitle={getRoleSummary(company.roles)}
+                  onOpen={() => navigateToCompany(company.id)}
+                />
+              ))
+            : []
+        }
+      >
         {isLoading && <ShowcaseLoading count={3} />}
-        {!isLoading &&
-          companies.map((company) => (
-            <Showcase
-              key={company.id}
-              title={company.name}
-              subtitle={getRoleSummary(company.roles)}
-              onOpen={() => navigateToCompany(company.id)}
-            />
-          ))}
       </ShowcaseGrid>
     </Container>
   );

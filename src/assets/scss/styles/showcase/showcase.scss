@@ -55,6 +55,20 @@
       padding: 0.5rem 1rem;
       padding-top: 0;
     }
+
+    & h6 {
+      @include sm {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      @include md {
+        -webkit-line-clamp: none;
+      }
+    }
   }
 
   &__title {
