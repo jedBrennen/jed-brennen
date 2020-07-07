@@ -61,7 +61,7 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
     options: FilterOption[];
   }>({ companies: [], options: [] });
   const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
-  const [filter, setFilter] = useState<FilterOption>();
+  const [filter, setFilter] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
@@ -100,11 +100,16 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
     setFilteredCompanies(
       filter
         ? companies.companies.filter((company) =>
-            company.skills.some((skill) => skill.id === filter?.value)
+            company.skills.some((skill) => skill.id === filter)
           )
         : companies.companies
     );
   }, [filter, companies.companies]);
+
+  useEffect(() => {
+    const { hash } = props.location;
+    setFilter(hash.substring(1));
+  }, [props.location]);
 
   return (
     <Container>
@@ -114,9 +119,13 @@ const CompanyList: React.FC<RouteComponentProps> = (props) => {
       </Alert>
       <Filter
         options={companies.options}
-        selectedOption={filter}
+        selectedOption={companies.options.find(
+          (option) => option.value === filter
+        )}
         onChange={(option) =>
-          option === filter ? setFilter(undefined) : setFilter(option)
+          option.value === filter
+            ? setFilter(undefined)
+            : setFilter(option.value)
         }
       />
       <ShowcaseGrid

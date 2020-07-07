@@ -1,19 +1,41 @@
 @import 'assets/scss/styles/helpers/screen-helpers';
 
 .skill-wheel {
-  &__container {
+  &__motion {
+    transform-style: preserve-3d;
     cursor: pointer;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     border: 5px solid var(--info);
     border-radius: 50%;
     box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
 
     &--no-data {
       cursor: default;
+    }
+  }
+
+  &__container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__front,
+  &__back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  &__back {
+    transform: rotateY(180deg) !important;
+
+    & .btn.btn-sm {
+      padding: 2px 8px;
+      border-radius: 10rem;
     }
   }
 

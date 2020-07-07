@@ -47,7 +47,7 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
     options: FilterOption[];
   }>({ projects: [], options: [] });
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [filter, setFilter] = useState<FilterOption>();
+  const [filter, setFilter] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
@@ -83,10 +83,15 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
   }, [firebaseService]);
 
   useEffect(() => {
+    const { hash } = props.location;
+    setFilter(hash.substring(1));
+  }, [props.location]);
+
+  useEffect(() => {
     setFilteredProjects(
       filter
         ? projects.projects.filter((project) =>
-            project.skills.some((skill) => skill.id === filter?.value)
+            project.skills.some((skill) => skill.id === filter)
           )
         : projects.projects
     );
@@ -100,9 +105,13 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
       </Alert>
       <Filter
         options={projects.options}
-        selectedOption={filter}
+        selectedOption={projects.options.find(
+          (option) => option.value === filter
+        )}
         onChange={(option) =>
-          option === filter ? setFilter(undefined) : setFilter(option)
+          option.value === filter
+            ? setFilter(undefined)
+            : setFilter(option.value)
         }
       />
       <ShowcaseGrid
