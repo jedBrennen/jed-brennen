@@ -28,7 +28,7 @@ const SkillWheelMotion: React.FC = (props) => {
 
   return (
     <motion.div
-      className="skill-wheel__motion skill-wheel__container"
+      className="skill-wheel__motion"
       animate={{ rotateY: flipped ? 180 : 0 }}
       onTap={() => setFlipped(!flipped)}
       layoutTransition={true}

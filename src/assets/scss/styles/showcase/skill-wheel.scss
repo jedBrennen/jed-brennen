@@ -2,15 +2,12 @@
 
 .skill-wheel {
   &__motion {
+    height: 100%;
     transform-style: preserve-3d;
     cursor: pointer;
     border: 5px solid var(--info);
     border-radius: 50%;
     box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
-
-    &--no-data {
-      cursor: default;
-    }
   }
 
   &__container {
@@ -19,6 +16,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 5px solid var(--info);
+    border-radius: 50%;
+    box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+
+    .skill-wheel__motion & {
+      border: none;
+      box-shadow: none;
+    }
   }
 
   &__front,
