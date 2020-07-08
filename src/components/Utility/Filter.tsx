@@ -11,7 +11,7 @@ export type FilterOption = {
 interface FilterProps {
   options: FilterOption[];
   selectedOption?: FilterOption;
-  onChange?: (option: FilterOption) => void;
+  onChange?: (option?: FilterOption) => void;
 }
 
 const Filter: React.FC<FilterProps> = (props) => {
@@ -24,6 +24,16 @@ const Filter: React.FC<FilterProps> = (props) => {
 
   return (
     <Row className="justify-content-center">
+      {!!sortedOptions.length && (
+        <Button
+          className="filter-button m-1"
+          size="sm"
+          onClick={() => onChange && onChange(undefined)}
+          variant={!!selectedOption ? 'outline-info' : 'info'}
+        >
+          All
+        </Button>
+      )}
       {sortedOptions.map((option) => (
         <Button
           key={option.value}

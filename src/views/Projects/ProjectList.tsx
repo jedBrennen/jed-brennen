@@ -108,11 +108,7 @@ const ProjectList: React.FC<RouteComponentProps> = (props) => {
         selectedOption={projects.options.find(
           (option) => option.value === filter
         )}
-        onChange={(option) =>
-          option.value === filter
-            ? setFilter(undefined)
-            : setFilter(option.value)
-        }
+        onChange={(option) => setFilter(option?.value)}
       />
       <ShowcaseGrid
         showcases={
