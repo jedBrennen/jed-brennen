@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 
 import Skill from 'models/skill.model';
@@ -51,6 +51,7 @@ const getOrderedSkills = (
 };
 
 const SkillsHeader: React.FC<SkillsHeaderProps> = (props) => {
+  const [flippedSkill, setFlippedSkill] = useState<string>();
   const { skills, projects, companies } = props;
   const orderedSkills = getOrderedSkills(skills, projects, companies);
 
@@ -66,6 +67,12 @@ const SkillsHeader: React.FC<SkillsHeaderProps> = (props) => {
                 skill={skill}
                 projects={getProjects(skill.id, projects)}
                 companies={getCompanies(skill.id, companies)}
+                flipped={flippedSkill === skill.id}
+                onTap={() =>
+                  setFlippedSkill(
+                    flippedSkill === skill.id ? undefined : skill.id
+                  )
+                }
               />
             );
           })}

@@ -14,8 +14,15 @@ import 'assets/scss/styles/showcase/skill-wheel.scss';
 
 interface SkillWheelProps {
   skill: Skill;
+  flipped?: boolean;
   projects?: Project[];
   companies?: Company[];
+  onTap?: VoidFunction;
+}
+
+interface SkillWheelMotionProps {
+  flipped?: boolean;
+  onTap?: VoidFunction;
 }
 
 interface SkillWheelFrontProps {
@@ -23,14 +30,13 @@ interface SkillWheelFrontProps {
   name: string;
 }
 
-const SkillWheelMotion: React.FC = (props) => {
-  const [flipped, setFlipped] = useState<boolean>(false);
-
+const SkillWheelMotion: React.FC<SkillWheelMotionProps> = (props) => {
+  const { flipped, onTap } = props;
   return (
     <motion.div
       className="skill-wheel__motion"
       animate={{ rotateY: flipped ? 180 : 0 }}
-      onTap={() => setFlipped(!flipped)}
+      onTap={() => onTap && onTap()}
       layoutTransition={true}
     >
       {props.children}
@@ -60,7 +66,7 @@ const SkillWheelBack: React.FC = (props) => {
 };
 
 const SkillWheel: React.FC<SkillWheelProps> = (props) => {
-  const { skill, projects, companies } = props;
+  const { skill, projects, companies, flipped, onTap } = props;
   const noData = !projects?.length && !companies?.length;
 
   return noData ? (
@@ -71,7 +77,7 @@ const SkillWheel: React.FC<SkillWheelProps> = (props) => {
     </AspectBox>
   ) : (
     <AspectBox className="p-4">
-      <SkillWheelMotion>
+      <SkillWheelMotion {...{ flipped, onTap }}>
         <SkillWheelFront logo={skill.logo} name={skill.name}>
           <span className="sr-only">{skill.name}</span>
           {projects && !!projects.length && (
