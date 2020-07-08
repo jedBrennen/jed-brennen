@@ -59,22 +59,27 @@ const EducationHeader: React.FC<EducationHeaderProps> = (props) => {
                   );
                 })}
               </div>
-              <ShowcaseGrid>
-                {getProjects(edu.projects, projects).map((project) => {
-                  return (
-                    <Showcase
-                      key={project.id}
-                      title={project.title}
-                      titleBadge={
-                        project.beta ? <BetaBadge>Beta</BetaBadge> : undefined
-                      }
-                      subtitle={project.shortDescription ?? ''}
-                      image={getCoverImage(project.images, project.coverImage)}
-                      onOpen={() => navigateToProject(project.id)}
-                    />
-                  );
-                })}
-              </ShowcaseGrid>
+              <ShowcaseGrid
+                showcases={getProjects(edu.projects, projects).map(
+                  (project) => {
+                    return (
+                      <Showcase
+                        key={project.id}
+                        title={project.title}
+                        titleBadge={
+                          project.beta ? <BetaBadge>Beta</BetaBadge> : undefined
+                        }
+                        subtitle={project.shortDescription ?? ''}
+                        image={getCoverImage(
+                          project.images,
+                          project.coverImage
+                        )}
+                        onOpen={() => navigateToProject(project.id)}
+                      />
+                    );
+                  }
+                )}
+              />
             </div>
           );
         })}

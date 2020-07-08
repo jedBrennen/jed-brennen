@@ -11,7 +11,7 @@ body {
 .app-navbar {
   &.navbar {
     & .navbar-brand {
-      @include max-xs {
+      @include max-sm {
         padding-top: 10px;
         padding-bottom: 10px;
       }
