@@ -15,7 +15,7 @@
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-awesome-slider": "^4.1.0",
-    "react-bootstrap": "^1.0.1",
+    "react-bootstrap": "^1.1.1",
     "react-bootstrap-switch": "^15.5.3",
     "react-dom": "^16.13.1",
     "react-particles-js": "^3.2.1",
